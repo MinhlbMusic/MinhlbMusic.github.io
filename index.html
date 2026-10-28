@@ -348,6 +348,7 @@ body{display:block;min-height:100svh;padding:max(10px,env(safe-area-inset-top)) 
 .au .btn.dg{background:linear-gradient(#f7a2bb,#e5709a)}
 .au .btn.sm{padding:9px 12px;font-size:11px}
 @media(pointer:coarse){.au .f input[type=text],.au .f input[type=password]{font-size:16px}}
+.ytb{display:block;width:100%;margin:14px 0 0}.song[data-ytr],.song[data-xr]{cursor:pointer}.lk{display:inline-block;text-decoration:none;margin:0}
 </style>
 </head>
 <body>
@@ -442,6 +443,8 @@ body{display:block;min-height:100svh;padding:max(10px,env(safe-area-inset-top)) 
  pod: true -> tập podcast (hiện ở mục Podcasts, tách khỏi nhạc; nhớ vị trí nghe, chỉnh tốc độ). Vd: {t:"Tập 1",a:"Tên show",pod:true,src:"music/podcasts/ep1.mp3"}
  alt: (tuỳ chọn) file dự phòng, vd "music/clip.webm" — tự dùng khi trình duyệt không phát được src
  img: (tuỳ chọn) ảnh bìa, vd "url(img/bia1.jpg)" */
+/* Khoá API YouTube để bật tìm kiếm theo tên (xem hướng dẫn trong chat). Để trống = chỉ dán link. */
+var YT_KEY="";
 var LIB=[
  {t:"YouTube video (đổi tên ở đây)",a:"YouTube",yt:"TgT7yKv_Iwc",img:"url(https://i.ytimg.com/vi/TgT7yKv_Iwc/hqdefault.jpg)"},
  {t:"Beats to Sleep / Chill",a:"Lofi Girl",yt:"5qap5aO4i9A"},
@@ -608,9 +611,9 @@ function prog(){var x=A[cur],c=0,d=0;if(!x)return;try{if(x.yt){if(!yok||!yp.getD
 setInterval(function(){if(dock)prog()},500);
 function yid(v){var m=v.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#\s]*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);return m&&m[1]}
 function save(){try{localStorage.setItem("mia_yt",JSON.stringify(S.filter(function(s){return s.usr}).map(function(s){return{t:s.t,a:s.a,yt:s.yt,pod:s.pod?1:0}})))}catch(e){}}
-function showYT(x){show(head("YouTube link","Press Enter or tap ▶")+row(x,1))}
+function showYT(x){show(head("YouTube link","Press Enter or tap ▶")+row(x,1)+'<div id="ytres"></div>');ytRel(x)}
 function addYT(id){var x=S.filter(function(s){return s.yt===id})[0];if(x)return x;x={id:"s"+S.length,t:"YouTube video",a:"youtube.com",yt:id,img:ytimg(id),fav:false,usr:1};S.push(x);reindex();save();
- fetch("https://www.youtube.com/oembed?format=json&url="+encodeURIComponent("https://www.youtube.com/watch?v="+id)).then(function(r){return r.json()}).then(function(j){x.t=j.title;x.a=j.author_name;save();if(yid(q.value)===id)showYT(x)}).catch(function(){});return x}
+ fetch("https://www.youtube.com/oembed?format=json&url="+encodeURIComponent("https://www.youtube.com/watch?v="+id)).then(function(r){return r.json()}).then(function(j){x.t=clean(j.title);x.a=clean(j.author_name);save();if(yid(q.value)===id)showYT(x)}).catch(function(){});return x}
 function show(html){main.classList.toggle("v",!!html);if(html)view.innerHTML=html;paint()}
 function go(n){curNav=n;plOpen=null;blOpen=null;if(n!=="Recently Played")quickPick=false;q.value="";$$(".nav").forEach(function(b){b.classList.toggle("on",b.dataset.go===n)});$(".top h1").textContent=n;var nb=$(".nav.on");if(mq.matches&&nb){var sd=$(".side");sd.scrollTo({left:nb.offsetLeft-(sd.clientWidth-nb.offsetWidth)/2,behavior:"smooth"})}scrollTo(0,scrollY);show(n==="Dashboard"?"":V[n]())}
 function fav(id){var x=A[id];x.fav=!x.fav;saveFav();var n=S.filter(function(s){return s.fav}).length;$$(".stat b")[1].textContent=128+n-3;
@@ -694,6 +697,9 @@ document.addEventListener("click",function(e){
  if(t.closest("#go")){go("Recently Played");quickPick=true;return;play(cur||(music().filter(function(s){return!bad[s.id]})[Math.random()*music().filter(function(s){return!bad[s.id]}).length|0]||S[0]).id);return}
  if(t.closest(".prem .pk")){$("#md").classList.add("open");return}
  if(t.closest(".disc .btn")){var pk=discover();if(!pk){toast("⚠ Không còn bài nào phát được");return}chain=true;play(pk.s.id,true);toast("✨ "+pk.s.t+" — "+pk.why);clearTimeout(tm);tm=setTimeout(function(){$("#toast").classList.remove("show")},4200);return}
+ var xr=t.closest("[data-xr]");if(xr){xPlay(xr.dataset.xr);return}
+ var yr=t.closest("[data-ytr]");if(yr){ytPlay(yr.dataset.ytr);return}
+ if(t.closest("[data-ytq]")){ytSearch(q.value.trim());return}
  var p=t.closest("[data-id]");if(p){if(quickPick){quickPick=false;chain=false;play(p.dataset.id,true);go("Dashboard")}else play(p.dataset.id);return}
  var mx=t.closest("[data-mix]");if(mx){setMix(mx.dataset.mix);return}
  var bl=t.closest("[data-bl]");if(bl){if(pickMix){setMix(bl.dataset.bl);pickMix=false;go("Dashboard");return}blOpen=bl.dataset.bl;plOpen=null;show(blView(blOpen));return}
@@ -704,10 +710,53 @@ document.addEventListener("keydown",function(e){var t=e.target;
  if((e.key==="Enter"||e.key===" ")&&t.getAttribute("role")==="button"){e.preventDefault();t.click()}
  if(e.key==="Escape"){$$(".menu.open").forEach(function(m){m.classList.remove("open")});$("#md").classList.remove("open");if(q.value){q.value="";go(curNav)}}});
 q.addEventListener("input",function(){var raw=q.value.trim(),id=yid(raw);if(id){showYT(addYT(id));return}
+ var pl=ylist(raw);if(pl){ytPlaylist(pl);return}
+ if(/^https?:\/\//i.test(raw)){show(head("Link chưa hỗ trợ","")+ytMsg("Chỉ phát trực tiếp được link YouTube. Với Spotify, SoundCloud… hãy gõ tên bài hát rồi nhấn Enter để tìm trên nhiều nền tảng."));return}
  var v=raw.toLowerCase().replace(/[<>&"]/g,"");if(!v){go(curNav);return}
  var r=ALL.filter(function(x){return(x.t+" "+x.a).toLowerCase().indexOf(v)>-1});
- show(head("Results for “"+v+"”",r.length+" found")+(r.map(function(x){return row(x,x.id[0]==="s")}).join("")||'<div class="empty">No matches. Try another song or artist, or paste a YouTube link.</div>'))});
-q.addEventListener("keydown",function(e){var id=yid(q.value);if(e.key==="Enter"&&id){play(addYT(id).id,true);q.blur()}});
+ show(head("Results for “"+v+"”",r.length+" found")+(r.map(function(x){return row(x,x.id[0]==="s")}).join("")||'<div class="empty">No matches. Try another song or artist, or paste a YouTube link.</div>')+ytPrompt(raw))});
+q.addEventListener("keydown",function(e){var id=yid(q.value);if(e.key==="Enter"&&id){play(addYT(id).id,true);q.blur()}else if(e.key==="Enter"&&!id&&!ylist(q.value)&&q.value.trim()){ytSearch(q.value.trim());q.blur()}});
+/* ===== TÌM KIẾM TRÊN YOUTUBE (YouTube Data API v3) =====
+ Gõ tên bài rồi nhấn Enter (hoặc bấm nút "Tìm trên YouTube") để hiện danh sách; dán link video để xem thêm các bài cùng tên; dán link playlist để liệt kê bài trong playlist.
+ Cần YT_KEY (đặt ở đầu danh sách nhạc). Mỗi lần tìm tốn 100/10.000 đơn vị quota miễn phí mỗi ngày (~100 lượt tìm/ngày). */
+var RES={},YC={};
+function clean(s){var d=document.createElement("textarea");d.innerHTML=String(s==null?"":s);return d.value.replace(/[<>]/g,"")}
+function ylist(v){var m=v.match(/youtube\.com\/[^\s]*[?&]list=([\w-]+)/);return m&&m[1]}
+function ytMsg(m){return'<div class="empty">'+m+'</div>'}
+function ytRows(l){return l.map(function(r){RES[r.id]=r;return'<div class="song" data-ytr="'+r.id+'"><div class="th" style="background-image:'+ytimg(r.id)+'"></div><div><b>'+esc(r.t)+'</b><small>'+esc(r.a)+'</small></div><button class="play" data-ytr="'+r.id+'" aria-label="Play">'+PL+'</button></div>'}).join("")}
+function ytGet(u){if(YC[u])return Promise.resolve(YC[u]);return fetch(u).then(function(r){return r.json()}).then(function(j){if(j.error){var e=j.error.errors&&j.error.errors[0];throw e&&e.reason||"error"}YC[u]=j;return j})}
+function ytErr(c){return c==="nokey"?"Tính năng tìm trên YouTube chưa được bật (chưa có YT_KEY).":c==="quotaExceeded"||c==="dailyLimitExceeded"?"Hôm nay đã hết lượt tìm kiếm YouTube miễn phí. Hãy thử lại vào ngày mai, hoặc dán trực tiếp link bài hát.":/key|referer|accessNotConfigured|forbidden/i.test(c)?"API key YouTube chưa đúng hoặc chưa được phép dùng cho trang này.":"Không tìm được lúc này (lỗi mạng?). Hãy thử lại."}
+function ytApi(path){if(!YT_KEY)return Promise.reject("nokey");return ytGet("https://www.googleapis.com/youtube/v3/"+path+"&key="+encodeURIComponent(YT_KEY))}
+function ytFind(query){return ytApi("search?part=snippet&type=video&videoEmbeddable=true&maxResults=15&q="+encodeURIComponent(query)).then(function(j){return j.items.filter(function(i){return i.id&&i.id.videoId}).map(function(i){return{id:i.id.videoId,t:clean(i.snippet.title),a:clean(i.snippet.channelTitle)}})})}
+function ytFill(html,sub){var b=$("#ytres");if(b)b.innerHTML=html;var s=$("#ytsub");if(s&&sub!=null)s.textContent=sub}
+function ytRel(x){if(!YT_KEY||!x||!x.t||x.t==="YouTube video")return;var id=x.yt;
+ ytFind(x.t).then(function(l){if(yid(q.value)!==id)return;l=l.filter(function(r){return r.id!==id});ytFill(l.length?head("Bài cùng tên / tương tự",l.length+" kết quả")+ytRows(l):"")}).catch(function(){})}
+function ytPlaylist(pid){
+ show(head("YouTube playlist",'<i id="ytsub" style="font-style:normal">đang tải…</i>')+'<div id="ytres">'+ytMsg("Đang tải playlist…")+'</div>');
+ ytApi("playlistItems?part=snippet&maxResults=30&playlistId="+encodeURIComponent(pid)).then(function(j){if(ylist(q.value)!==pid)return;
+  var l=j.items.filter(function(i){return i.snippet&&i.snippet.resourceId&&i.snippet.resourceId.videoId&&!/^(Private|Deleted) video$/.test(i.snippet.title)}).map(function(i){return{id:i.snippet.resourceId.videoId,t:clean(i.snippet.title),a:clean(i.snippet.videoOwnerChannelTitle||i.snippet.channelTitle)}});
+  ytFill(l.length?ytRows(l):ytMsg("Playlist trống hoặc ở chế độ riêng tư."),l.length+" bài")}).catch(function(c){if(ylist(q.value)===pid)ytFill(ytMsg(ytErr(c)),"")})}
+function ytPlay(id){var r=RES[id],x=addYT(id);if(r){x.t=r.t;x.a=r.a;save()}play(x.id,true)}
+function xImg(u){return/^https:\/\//.test(u||"")?"url('"+encodeURI(u).replace(/['"()]/g,function(c){return"%"+c.charCodeAt(0).toString(16)})+"')":G[0]}
+var XR={};
+function xRows(l,tag){return l.map(function(r){var k=tag+":"+String(r.id).replace(/[^\w-]/g,"");XR[k]=r;return'<div class="song" data-xr="'+k+'"><div class="th" style="background-image:'+xImg(r.img)+'"></div><div><b>'+esc(r.t)+'</b><small>'+esc(r.a)+'</small></div><button class="play" data-xr="'+k+'" aria-label="Play">'+PL+'</button></div>'}).join("")}
+function xPlay(k){var r=XR[k];if(!r)return;var x=S.filter(function(s){return s.src===r.src})[0];
+ if(!x){x={id:"s"+S.length,t:clean(r.t),a:clean(r.a),src:r.src,img:xImg(r.img),fav:false,ext:1};S.push(x);reindex()}
+ play(x.id,true)}
+function xFill(id,title,html){var b=$("#"+id);if(b)b.innerHTML=html?head(title,"")+html:""}
+function xJson(u){if(YC[u])return Promise.resolve(YC[u]);return fetch(u).then(function(r){return r.json()}).then(function(j){YC[u]=j;return j})}
+function srchAudius(query){return xJson("https://api.audius.co/v1/tracks/search?limit=10&app_name=MiaMusic&query="+encodeURIComponent(query)).then(function(j){return(j.data||[]).filter(function(t){return t.is_streamable!==false}).map(function(t){return{id:t.id,t:clean(t.title),a:clean(t.user&&t.user.name),src:"https://api.audius.co/v1/tracks/"+encodeURIComponent(t.id)+"/stream?app_name=MiaMusic",img:t.artwork&&(t.artwork["150x150"]||t.artwork["480x480"])}})})}
+function srchItunes(query){return xJson("https://itunes.apple.com/search?media=music&entity=song&limit=10&term="+encodeURIComponent(query)).then(function(j){return(j.results||[]).filter(function(t){return t.previewUrl}).map(function(t){return{id:t.trackId,t:clean(t.trackName),a:clean(t.artistName),src:t.previewUrl,img:(t.artworkUrl100||"").replace("100x100","200x200")}})})}
+function lkRow(v){var e=encodeURIComponent(v),L=[["Spotify","https://open.spotify.com/search/"+e],["Apple Music","https://music.apple.com/search?term="+e],["YouTube Music","https://music.youtube.com/search?q="+e],["SoundCloud","https://soundcloud.com/search?q="+e],["Deezer","https://www.deezer.com/search/"+e],["Zing MP3","https://zingmp3.vn/tim-kiem/tat-ca?q="+e],["NhacCuaTui","https://www.nhaccuatui.com/tim-kiem?q="+e],["Bandcamp","https://bandcamp.com/search?q="+e],["Tidal","https://tidal.com/search?q="+e]];
+ return head("Mở tìm kiếm trên nền tảng khác","")+'<p class="empty" style="padding:0 0 8px;text-align:left">Các trang này không cho nhúng phát trực tiếp, bấm để mở tab mới:</p><div class="plact">'+L.map(function(x){return'<a class="btn gh lk" target="_blank" rel="noopener noreferrer" href="'+x[1]+'">'+x[0]+' ↗</a>'}).join("")+'</div>'}
+function ytSearch(query){if(!query)return;
+ show(head("Kết quả cho “"+esc(query)+"”","")+'<div id="ytres">'+(YT_KEY?ytMsg("Đang tìm trên YouTube…"):"")+'</div><div id="aures"></div><div id="itres"></div><div id="lkres">'+lkRow(query)+'</div>');
+ var ok=function(){return q.value.trim()===query};
+ if(YT_KEY)ytFind(query).then(function(l){if(ok())ytFill(head("YouTube",l.length+" kết quả")+(l.length?ytRows(l):ytMsg("Không thấy kết quả.")))}).catch(function(c){if(ok())ytFill(head("YouTube","")+ytMsg(ytErr(c)))});
+ srchAudius(query).then(function(l){if(ok())xFill("aures","Audius · nghe đủ bài",l.length?xRows(l,"aud"):"")}).catch(function(){});
+ srchItunes(query).then(function(l){if(ok())xFill("itres","Apple Music · nghe thử 30 giây",l.length?xRows(l,"itn"):"")}).catch(function(){})}
+function ytPrompt(v){return'<button class="btn ytb" data-ytq="1">🔍 Tìm “'+esc(v)+'” trên mọi nền tảng</button><p class="empty" style="padding:8px 0 0">hoặc nhấn Enter</p>'}
+
 var mq=matchMedia("(max-width:760px),(max-height:500px) and (max-width:1000px)"),prem0=$(".prem"),disc0=$(".disc");
 function place(){if(mq.matches)main.insertBefore(prem0,disc0);else $(".side").appendChild(prem0);fit()}
 mq.addEventListener("change",place);
