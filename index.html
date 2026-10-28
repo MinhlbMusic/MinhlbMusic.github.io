@@ -34,7 +34,7 @@ html{background:#bcaee6}
 body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px 0;background:radial-gradient(120% 90% at 50% 0,#d6caf4,#c1b3e9 55%,#b2a1e2);font-family:"Plus Jakarta Sans","Nunito","Segoe UI",system-ui,sans-serif;color:var(--ink)}
 svg{display:block}
 button{font-family:inherit}
-.app{width:708px;height:900px;padding:0 15px;display:grid;grid-template-columns:126px 1fr}
+.app{width:708px;height:900px;padding:0 15px;display:grid;grid-template-columns:126px minmax(0,1fr)}
 /* sidebar */
 .side{position:relative;z-index:2;display:flex;flex-direction:column;padding:20px 7px 0;border-radius:42px;color:#fff;background:linear-gradient(180deg,#a393e6,#917fdb 60%,#9585df);box-shadow:12px 16px 28px rgba(80,60,160,.42),inset 0 4px 6px rgba(255,255,255,.45),inset 4px 0 8px rgba(255,255,255,.12),inset 0 -10px 16px rgba(70,50,160,.32)}
 .ava{width:108px;height:108px;margin:0 auto;border-radius:50%;filter:drop-shadow(0 8px 8px rgba(70,50,150,.35))}
@@ -53,7 +53,7 @@ button{font-family:inherit}
 .btn:active,.play:active{transform:translateY(1px) scale(.98)}
 :is(.btn,.nav,.play):focus-visible{outline:3px solid #fff;outline-offset:2px}
 /* main */
-.main{margin:2px 0 2px -12px;position:relative;z-index:1;padding:20px 20px 13px 36px;border-radius:40px;display:grid;grid-template-rows:44px 172px 132px 168px 207px 70px;gap:14px;background:linear-gradient(180deg,#f7eff0,#f2e9ef);box-shadow:0 18px 30px rgba(90,70,170,.3),inset 0 3px 5px #fff,inset 0 -6px 12px rgba(170,140,220,.2)}
+.main{margin:2px 0 2px -12px;position:relative;z-index:1;padding:20px 20px 13px 36px;border-radius:40px;display:grid;grid-template-rows:44px 172px 132px 168px 207px 70px;gap:14px;grid-template-columns:minmax(0,1fr);background:linear-gradient(180deg,#f7eff0,#f2e9ef);box-shadow:0 18px 30px rgba(90,70,170,.3),inset 0 3px 5px #fff,inset 0 -6px 12px rgba(170,140,220,.2)}
 .top{display:flex;align-items:center;gap:12px}
 .top h1{margin:0;flex:none;width:111px;white-space:nowrap;font-size:21px;font-weight:800;letter-spacing:-.2px}
 .search{flex:none;width:208px;margin-left:33px;font-size:10px;gap:6px;display:flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:999px;background:linear-gradient(#fffaf8,#f8f0f1);box-shadow:var(--clay);cursor:text}
@@ -70,7 +70,7 @@ button{font-family:inherit}
 .nt{position:absolute;z-index:2;width:20px;height:23px;filter:drop-shadow(0 2px 2px rgba(150,70,110,.22))}.hero h2{margin:0 0 6px;font-size:14.5px;font-weight:700;line-height:1.3}
 .hero p{margin:0 0 14px;max-width:150px;font-size:11px;font-weight:500;line-height:1.5;color:#6c6694}
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .stat{padding:14px 12px 0;border-radius:24px;box-shadow:0 20px 28px -8px rgba(122,98,190,.42),8px 9px 16px rgba(150,125,210,.22),-5px -5px 12px rgba(255,255,255,.95),inset 0 4px 6px rgba(255,255,255,.95),inset 0 -7px 12px rgba(170,140,220,.3)}
 .stat:nth-child(1){background:linear-gradient(#ece5f8,#e1d7f4)}.stat:nth-child(2){background:linear-gradient(#fde2de,#f9d0d0)}.stat:nth-child(3){background:linear-gradient(#fef4d4,#fce9b8)}.stat:nth-child(4){background:linear-gradient(#e4ecf9,#d6e2f6)}
 .tile{width:36px;height:36px;margin-bottom:12px;border-radius:12px;display:grid;place-items:center;box-shadow:0 6px 10px rgba(var(--t),.4),inset 0 3px 4px rgba(255,255,255,.55),inset 0 -4px 6px rgba(0,0,0,.16)}
@@ -83,7 +83,7 @@ button{font-family:inherit}
 .card{min-height:0;padding:14px 16px;border-radius:26px;background:linear-gradient(145deg,#fffaf8,#f6ecee);box-shadow:var(--clay)}
 .card h3{margin:0 0 8px;height:20px;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:700}
 .card h3 span{padding:4px 9px;border-radius:12px;font-size:9.5px;font-weight:700;background:linear-gradient(#fffaf8,#f6eef0);box-shadow:0 4px 8px rgba(122,98,190,.2),inset 0 2px 2px #fff}
-.chart{position:relative;display:grid;grid-template-columns:22px 1fr;column-gap:4px}
+.chart{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:4px}
 .ax{display:flex;flex-direction:column;justify-content:space-between;height:88px;font-size:8.5px;font-weight:600;color:var(--mute)}
 .bars{display:flex;align-items:flex-end;justify-content:space-around;height:88px;background:linear-gradient(rgba(150,130,200,.18) 1px,transparent 1px) 0 0/100% 29.3px}
 .col{height:100%;display:flex;align-items:flex-end}
@@ -93,7 +93,7 @@ button{font-family:inherit}
 .dw{display:flex;align-items:center;gap:14px;height:112px}
 .donut{position:relative;width:98px;height:98px;flex:none;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#a58be8 0 44%,transparent 44% 45.2%,#f5a6c0 45.2% 69%,transparent 69% 70.2%,#f9d57a 70.2% 84%,transparent 84% 85.2%,#9ccf8a 85.2% 94%,transparent 94% 95.2%,#7fb3ee 95.2% 99%,transparent 99% 100%);filter:drop-shadow(0 5px 5px rgba(110,90,180,.3))}
 .donut::after{content:"";width:46px;height:46px;border-radius:50%;background:#fbf4f3;box-shadow:inset 2px 3px 5px rgba(130,105,200,.3),inset -2px -2px 4px #fff}
-.leg{flex:1;display:grid;gap:8px;font-size:10.5px;font-weight:600}
+.leg{flex:1;min-width:0;display:grid;gap:8px;font-size:10.5px;font-weight:600}
 .leg p{margin:0;display:flex;align-items:center;gap:7px;white-space:nowrap}
 .leg b{margin-left:auto;font-weight:600}
 .dot{width:10px;height:10px;border-radius:50%;box-shadow:0 2px 3px rgba(90,70,170,.3),inset 0 1px 2px rgba(255,255,255,.6)}
@@ -349,6 +349,78 @@ body{display:block;min-height:100svh;padding:max(10px,env(safe-area-inset-top)) 
 .au .btn.sm{padding:9px 12px;font-size:11px}
 @media(pointer:coarse){.au .f input[type=text],.au .f input[type=password]{font-size:16px}}
 .ytb{display:block;width:100%;margin:14px 0 0}.song[data-ytr],.song[data-xr]{cursor:pointer}.lk{display:inline-block;text-decoration:none;margin:0}
+
+
+/* ===== Text-overflow safety net (long words / any script / any language) =====
+   Rule: layout never grows with text. Grid tracks use minmax(0,1fr), flex children get min-width:0,
+   labels clamp to 1-2 lines with an ellipsis, buttons ellipsize, free text wraps anywhere. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:"Plus Jakarta Sans","Nunito","Segoe UI",system-ui,-apple-system,"Noto Sans","Noto Sans Arabic","Noto Sans Hebrew","Noto Sans Devanagari","Noto Sans Bengali","Noto Sans Thai","Noto Sans SC","Noto Sans JP","Noto Sans KR",Roboto,"Helvetica Neue",Arial,sans-serif;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
+.main{min-width:0}
+.main>*,.row>*,.stats>*,.card,.hero>*,.song>*,.top>*{min-width:0}
+/* clamp helpers */
+.nl,.nav>font,.card h3>font,.hl{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;min-width:0}
+.hl{-webkit-line-clamp:1;line-clamp:1;flex:1}
+/* header */
+.top h1{flex:1 1 0;width:auto;min-width:0;font-size:19px;white-space:normal;overflow-wrap:anywhere;line-height:1.15;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.search{flex:0 1 208px;min-width:0;margin-left:0}
+.search input{min-width:0;width:100%;text-overflow:ellipsis}
+.top .ic,.langbtn,.top .ic.p{flex:none}
+/* sidebar */
+.nav{min-width:0;white-space:normal;text-align:start}
+.nav .nl{flex:1}
+.hi{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.3;padding:0 4px}
+.prem{overflow:hidden;overflow-wrap:anywhere}
+.prem b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
+.prem .btn{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* cards, stats, hero */
+.card h3{gap:8px;line-height:1.25}
+.card h3 span{flex:none;max-width:55%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat small,.stat em{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.25}
+.stat em{-webkit-line-clamp:1;line-clamp:1}
+.stat b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero h2{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
+.hero p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;overflow-wrap:anywhere;max-width:min(150px,100%)}
+.hero .btn,.disc .btn,.btn.pk{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.disc>div,.hero>div{min-width:0}
+.disc *{overflow-wrap:anywhere}
+/* chart + legend */
+.days span{width:auto;flex:1 1 0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.leg p{white-space:normal;line-height:1.2;min-width:0}
+.leg b{flex:none}
+.leg p .hl{flex:0 1 auto}
+.dw{min-width:0;gap:8px}
+.leg p{gap:5px}
+.leg p{overflow:hidden}
+/* lists */
+.card .song small{-webkit-line-clamp:1;line-clamp:1}
+.view .song{height:auto;min-height:56px;padding-top:6px;padding-bottom:6px}
+/* free text, chips, buttons elsewhere */
+.btn{max-width:100%;line-height:1.25;text-align:center}
+.plact .btn,.lk{white-space:normal;overflow-wrap:anywhere}
+.empty{overflow-wrap:anywhere}
+/* RTL languages (Arabic, Hebrew, Persian, Urdu...) */
+.translated-rtl .nav,.translated-rtl .song>div,.translated-rtl .search input{text-align:right}
+/* ===== Language switcher ===== */
+.langbtn{flex:none;width:38px;height:38px;border:0;border-radius:50%;display:grid;place-items:center;color:#7a64d4;background:linear-gradient(#fffaf8,#f6eef0);box-shadow:var(--clay);cursor:pointer;margin-left:7px;padding:0;font:inherit}
+.langbtn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.langbtn:focus-visible{outline:2px solid #7a64d4;outline-offset:2px}
+@media (max-width:760px),(max-height:500px) and (max-width:1000px){.langbtn{order:2;margin-left:0;width:40px;height:40px}}
+.langpanel{position:fixed;z-index:9999;width:280px;max-width:calc(100vw - 24px);max-height:min(460px,70vh);display:none;flex-direction:column;border-radius:20px;background:linear-gradient(#fffaf8,#f6eef0);box-shadow:0 22px 44px -10px rgba(90,64,160,.45),0 3px 8px rgba(112,88,180,.2),inset 0 2px 3px #fff;padding:12px;color:var(--ink)}
+.langpanel.open{display:flex}
+.langpanel h3{margin:2px 4px 8px;font-size:13px;font-weight:800}
+.langpanel input{flex:none;width:100%;box-sizing:border-box;height:36px;border:0;border-radius:999px;padding:0 14px;font:inherit;font-size:13px;color:var(--ink);background:#fff;box-shadow:inset 2px 3px 6px rgba(150,125,210,.25)}
+.langlist{overflow:auto;margin:8px -4px 0;padding:0 4px;display:flex;flex-direction:column;gap:2px}
+.langlist button{display:flex;justify-content:space-between;gap:8px;text-align:left;border:0;background:transparent;border-radius:12px;padding:8px 10px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer}
+.langlist button small{color:var(--mute);font-size:11px;white-space:nowrap}
+.langlist button:hover,.langlist button:focus-visible{background:rgba(122,100,212,.12);outline:0}
+.langlist button.on{background:linear-gradient(145deg,#a794f0,#7561d6);color:#fff}
+.langlist button.on small{color:#e6defc}
+.langempty{padding:14px;text-align:center;color:var(--mute);font-size:12px}
+body{top:0!important}
+.skiptranslate>iframe,iframe.skiptranslate,#goog-gt-tt,.goog-te-balloon-frame{display:none!important}
+#gte{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden}
+font{background:none!important;box-shadow:none!important}
 </style>
 </head>
 <body>
@@ -386,7 +458,9 @@ body{display:block;min-height:100svh;padding:max(10px,env(safe-area-inset-top)) 
    <h1>Dashboard</h1>
    <label class="search"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><input type="search" placeholder="Search for songs, artists..." aria-label="Search for songs, artists" autocomplete="off"></label>
    <div class="ic"><img class="gl bell" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAxCAYAAACs0jsDAAADhElEQVRo3s2ZW0gUYRTHv93V1AW7rJrbxTIsDUqyuxAUBJVC9VJ2owvkQ5FUZEiXB7ELRVAQhUkFS08FERkR9BIU1VsE9ZAlVNCNKCpMzUtepv/Bs7AtM7vzzXw73x744Trzjfv3zJzznXPGd6yhUyi0YnAIzAA3wTXwV8UfzjAMQ5XIInAbzOXfl/Kx42DAtVChRmcIXIoRSZYJGkAOuAA+AcO5R90pzQDzwUmw3OR8FqgHm8FTcA88BF9kRTu99X5QySJWgtwEa31gItgAasBXcAO0gHcSQqVF5oMDYA8YK3ltVPRB9vIZcAX0qfboYnAeLGKvujESfBbM5EzRlSSYbAtdDa6CsMJ0RgG3C2SDfaDbbTAtAxFQINQb3Zlt4AM4AYZNF5FDk1AELoMCG2udQrFSB0qt1vjpGU0AnT8KypKsUwEcYWyxOu9P8q8WgxqRQlfGsQYErVyeyKp51/HKqEaYBl7JpKcAqOLc55UFwWxzodZRT56cJ7w1H1dgUgl/DhgvvLdM2eqpkosOL20QfJT16CwN3uwFb2WEkicnaRD6B3yz2EItI36cBqHUCfTLFCVBByWcktbIqiqzuvV5YIwGoTnsJNtCC7n08tpI5GTwxm6FH+LnVEcOLQEPTJ4Jy6j3aRBK3zld5tb3c5eoQ2yhquYu1TaaI3/YjkdLFTRvKRdKkbdRo0dDHFSDyRL+JrBQo1Cq2CaA9/83dxw1zBTQCAJxx70kD1QDX+zx2FtPc6JTYKrmYBoF9oM28Cg6owosKN8reBc6DWo1BlH8c0qzhN/gNRiiwpmS+zmwO01ERhM/NXnNoAIcplu/lscq6SIyPgPVgefU3NVq2tdlSr/t5NESkf4Wpi2USqqyNBf6hBJ+kxiZe4bTVOQz0ERDsBdgCYiAXx4Mw8wgG+af0WOdoAVUge++nevbYlMC5a9y7kCzOL/m8meDH+x87vkrHGYKauDoxcNj0M59fAflSk722VyQfOaO1Igf6dCHn7wb2Olt6E1IvaRIGn/vAHdZmG3zOxwP9oKLoEfyOrqmFQw5mPQ6rpy7hNwbOVp7y3EydVHhU7vSJ9FWt5t1lxJCHSul8Usr1wh2/qlGni05FOr8FSNdeISLh1UJ1nVz2XbHTTL1u6xyO8A60AwGTM6/BCtARBjCcPNdKl6D0yNARe11sJUHCD/AfTHyWrxHxfb0DxnUMQk6EysaAAAAAElFTkSuQmCC"><i>3</i></div>
-   <div class="ic p"><img class="gl usr" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAAuCAYAAAC1ZTBOAAADT0lEQVRYw9WZy29MURzHz72GxiMeoRSZUsnQiEdFxIIFC68uKpLKiEVD+AukukIsRNKFBSURISRqgyDxqIQSCxEs7Oo1IiReNZrOozrtvHx/5neoSWfmnDvnttdv8pk0uefe+5vf+Z3fq1Ym1SfKkMlgC1gHAmA8SII4+AAegQ4QK+cllkMlx4IWsB9MKbE2DNrAcRBxpmRSW8kx4BIIat73EewF93RfaGfxpclBEHRwXzW4BXbo3mulB7UsuRHcBr4yXKwfrAdPlbdbQ8np4AXwi/LlNVit6qN2FvZUpBn4NdYXYxFoA0rvt1IDSpacAN6BKmFOMmAXuFhyu1OJuMoDyYc6ab0wK11gGUgXW+TLqj1shQsKkizg3flUVEmhpqVfuCPjOEsVPziKD6twSckkhyRRfLvVLNntkpI94JspS4ZcUpICeqqkJRV98hk/zGdYyQcqi3C6lbR8y9lmlWF/7FDKOIpZnj6HQFo4qCwK8ASEVNbaGr/8LtjHFjCRbVpVF6v6pJQT4Ato5xjnVE6rbrVOxhkqV7gaP+MgC2W5Qm/hv12xpJSzIApOgkrFe96DZnBdR8HfBUYiWlaPRBbdA3aDJcNcpxLrIbcb18Cgox6nPxIzEU5o2+eAGk6hGc5Sb0wcNCgZFV4X1dw9qmKL/0Ccnu4RVtK50BRjKlgMpoGJsk3mnqiKw1MNd5pUoLzkU96pUv38OTh9PVEd15gHNoMNYCWodvgDn4Oj4I5KWCqlpI/jXwPYCuoM+/ErnhO1c3IooOSPaKGtDHJBUedSE5Y/JzrAQT+jUk/O4LTXMALKSSG3uQBmgWP5adOKh/+ZdCwEV8HSUTrI5J/1fLCGjZPUA98fRQVli3suf1Jixb5HpA9SIbDGI6HxBmiUkw1pySYPKSg4kjT+tWR3xMczmYDHEg2Fp+XkpzTpXQsC5vorY9SCndlc7s7WezhtHwaXbZ6YeVUoDW+nejIgvC3bbC77vSy1VE9+Fe7NH01ImE73eQ+ebEkStNIs6Ag4BVIe0o4+j8EmcNPq/dwrzVrJU7O5XElPAvPBbJH7V93Q9pWuzRS5UTJNaukhP7nMsjnNVnA9avGrqRIfAAluc6VKGb5G95PrhXju1CWroV8HKu0G0tuKyAAAAABJRU5ErkJggg=="></div>
+ 
+<button class="langbtn" id="langbtn" type="button" title="Language" aria-label="Change language" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.7 3.9 5.7 3.9 9s-1.3 6.3-3.9 9c-2.6-2.7-3.9-5.7-3.9-9S9.4 5.7 12 3z"/></svg></button>
+  <div class="ic p"><img class="gl usr" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAAuCAYAAAC1ZTBOAAADT0lEQVRYw9WZy29MURzHz72GxiMeoRSZUsnQiEdFxIIFC68uKpLKiEVD+AukukIsRNKFBSURISRqgyDxqIQSCxEs7Oo1IiReNZrOozrtvHx/5neoSWfmnDvnttdv8pk0uefe+5vf+Z3fq1Ym1SfKkMlgC1gHAmA8SII4+AAegQ4QK+cllkMlx4IWsB9MKbE2DNrAcRBxpmRSW8kx4BIIat73EewF93RfaGfxpclBEHRwXzW4BXbo3mulB7UsuRHcBr4yXKwfrAdPlbdbQ8np4AXwi/LlNVit6qN2FvZUpBn4NdYXYxFoA0rvt1IDSpacAN6BKmFOMmAXuFhyu1OJuMoDyYc6ab0wK11gGUgXW+TLqj1shQsKkizg3flUVEmhpqVfuCPjOEsVPziKD6twSckkhyRRfLvVLNntkpI94JspS4ZcUpICeqqkJRV98hk/zGdYyQcqi3C6lbR8y9lmlWF/7FDKOIpZnj6HQFo4qCwK8ASEVNbaGr/8LtjHFjCRbVpVF6v6pJQT4Ato5xjnVE6rbrVOxhkqV7gaP+MgC2W5Qm/hv12xpJSzIApOgkrFe96DZnBdR8HfBUYiWlaPRBbdA3aDJcNcpxLrIbcb18Cgox6nPxIzEU5o2+eAGk6hGc5Sb0wcNCgZFV4X1dw9qmKL/0Ccnu4RVtK50BRjKlgMpoGJsk3mnqiKw1MNd5pUoLzkU96pUv38OTh9PVEd15gHNoMNYCWodvgDn4Oj4I5KWCqlpI/jXwPYCuoM+/ErnhO1c3IooOSPaKGtDHJBUedSE5Y/JzrAQT+jUk/O4LTXMALKSSG3uQBmgWP5adOKh/+ZdCwEV8HSUTrI5J/1fLCGjZPUA98fRQVli3suf1Jixb5HpA9SIbDGI6HxBmiUkw1pySYPKSg4kjT+tWR3xMczmYDHEg2Fp+XkpzTpXQsC5vorY9SCndlc7s7WezhtHwaXbZ6YeVUoDW+nejIgvC3bbC77vSy1VE9+Fe7NH01ImE73eQ+ebEkStNIs6Ag4BVIe0o4+j8EmcNPq/dwrzVrJU7O5XElPAvPBbJH7V93Q9pWuzRS5UTJNaukhP7nMsjnNVnA9avGrqRIfAAluc6VKGb5G95PrhXju1CWroV8HKu0G0tuKyAAAAABJRU5ErkJggg=="></div>
   </div>
 
   <section class="hero">
@@ -401,7 +475,7 @@ body{display:block;min-height:100svh;padding:max(10px,env(safe-area-inset-top)) 
    <div class="stat"><div class="tile" style="background:linear-gradient(145deg,#8cc0fa,#4a82df);--t:74,130,223"><svg viewBox="0 0 24 24"><path d="M12 2c1 4 6 6.5 6 12a6 6 0 0 1-12 0c0-2.5 1.2-4 2.5-5.2C8.5 11 10 11 10.5 9.5 11.5 7.5 11 4.5 12 2z"/></svg></div><small>Current Streak</small><b>7</b><em>days in a row</em></div>
   </section>
 
-  <section class="row" style="grid-template-columns:266fr 227fr">
+  <section class="row" style="grid-template-columns:minmax(0,266fr) minmax(0,227fr)">
    <div class="card"><h3>Listening Overview <span>This Week<svg viewBox="0 0 10 6" width="8" height="5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></span></h3>
     <div class="chart"><div class="ax"><span>6h</span><span>4h</span><span>2h</span><span>0</span></div>
      <div class="bars" id="bars"></div>
@@ -417,7 +491,7 @@ body{display:block;min-height:100svh;padding:max(10px,env(safe-area-inset-top)) 
      </div></div></div>
   </section>
 
-  <section class="row" style="grid-template-columns:254fr 239fr">
+  <section class="row" style="grid-template-columns:minmax(0,254fr) minmax(0,239fr)">
    <div class="card"><h3>Recently Played <span>See All</span></h3>
     <div class="song"><div class="th" style="background-image:url(data:image/jpeg;base64,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)"></div><div><b>Sunset Drive</b><small>Lofi Chill</small></div><button class="play" aria-label="Play"><svg class="pl" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .9 1 1.4 1.7.9l9.4-6.4c.6-.4.6-1.3 0-1.8L10.2 4.7c-.7-.5-1.7 0-1.7.9z" fill="#6c5ce7" stroke="#6c5ce7" stroke-width="1.6" stroke-linejoin="round"/></svg><svg class="ps" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.8" height="14" rx="1.6" fill="#6c5ce7"/><rect x="13.7" y="5" width="3.8" height="14" rx="1.6" fill="#6c5ce7"/></svg></button></div>
     <div class="song"><div class="th" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCAB4AHgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0PVvEc+vXKlIztHekhKRqFJ+as7SAgjJUcetaLR87xzX5fLEu5+sQwsUkWWcheKi3ue1ClnTgU5Sc4xzVQrNlyoJCDzD2pwDggkcVMnT5hUyopHzfhXbTmznlTihiSlSEUcmrzW4jgEjHk02zsN7ea/AFWpBvB38Rr3rfnZy1GkU2QfZXnmYKiDOTWHa61pupXLR20yNIhxjNcb8X/H8emaCdO0qcecw2naa8T8D+JdWsPEiyzTMVkbJyaakzmU1c+sZI2lQCUgYp0F15bCJcGuavvEEJ8PRTCcCRlHesPRvEx/tVUlk3ZbHWmptHRFp7nrUNwAgDDFWre9FvOD2rLZ/MhjeMdRnilmR/JDdDVquypUoyWh6HpWroy5OKK4a3vZre0HXNFdsKt0eXVwy5jiLKNbeExDqavK6IoU85qhZq0kRd+tXylvDEJp5AAOea+KTuz6+OkUW4RGoxjrUothu3YqO0nsbmPfDIpPsa1reHzBnsK3jKxnUV0Nt9N+0J0qb+zlQMr/wjIq9bkx/KtSTQtPgdPWuuE7nmylyy1Mm3dnVkAwAcVj+O7y5sPBdzJYqTLsPSusktYreIOuMd6zfFH2TT/BlzeXaho9hPNdUWc9eopHxBqF5f3+oyTag7GTeflamxzm2dZEIDDpTteuo9Q8V3F1aAC33HGKopHJPLuU8A10wPP5Hc1L/xdrJSOPzW2L05qOz8V6tb3qTl2wDmnHQNS1G1MltCWCDJIFY0i3UMht5I8MvFau1jqgmj6h+Gfja41yFEun+6Mc16ZI8j3AI5SvkTwD4jvLHXorSIEAsBxX1rpEzzaLE0g+ZgOa4sTotDpo7mrIEa2UgUU8RbbUCiqw7fIc2I+NnD2uWbZjArkviBeXtpZ7IWKqe4rt7Yxyf6uuP+JsLrojE+lfPUndn0M3ypGb4Dmu5Ig5nLj0zXrOm3s2RG6ED1ryT4ayxQaX5j+tehxa9AZdqEdazrVeVmsI80TvrWHcAyjOa14dPM0ZwuDiuT0jWM7QGrrdMvZvO3OMrjiunDVVI8THqULlCbS7kqbeVCqZzurA8caXJq/ga50mAbyUIyK76W8ab93KnymqjWsag7EyD616kZHjwqN7n5/T+DtZtPEb6M9m6oZD8+OtT6/wCFZfDEcYnfa784r7I8V+Cre6gN5aW6faByCB3r528eeBvEt5eHUNQVjBF0HtXTCR2U7MzfC3iLStM8MSrPtaRlxzXnOow6pq2uTXOmWLSx5J+Va2rTSIpbz7OxKjOMV754A8J2lr4cnlWBTmMnLCt76G/Lpc8h+FvhRtQ11ZrpPLlVvumvqOxsWhsVhYYCAYNeQ+D4o7b4hSqMAeZ0Fe97Ultx06Vy4n4SqO5TEZW1Azuoq40Oy3AHSinQ+Awr/GefadbmPkHNcz8Uw/8Awj5GO1b8Gs2MA5nU/jXIfFDWrebQ8I4OR614OGpyT1R7dea0sVvAmmF/CZlya1bWER3LEseDVr4VxxX3g8Rlhk1q32hS29yzKvyk15+OjLm0OzCzjbVi6XeyreIkeTzXq2i3bLbL5y9q4DwzpRa7V5I88+leiQKm/wAorgKOK3wKl1PJzFpuyNhF+0SBiuFq7KYEgCqATVC0vVC+Wy4A70rTATf3hXtxdj52cGmWCqeSMrkntXnPxRS4g8MS+XbAqQegr0K4uVSNWQZ9favOPiF400m0tTYTzJI7DG0muuDNKLlc+XLW3F1r7P8AcKtyK+g/DN9GngqWFR8wj614xqltaNrK3djIFDtkqK9X0N0XwfKwGD5fX8K3R6y1icD4bnZ/iRIAf+Wn9a+hLbK26kntXzX4anMfxIctwDJX0XFOTZofUCssRFtaE0dzTkkH2cZorMnnKQAucCinQi1DU56799nyiNaufsbS+YzEehrnda8RT6lb/Z2cgjsaXTbl0tHjKlgR3rBubV5tdRV4BaplQ7Gqr6H0V8GZfK0KNHPJr03W9ZsdLt/MvACprx3wpJcaBoC3AxtC5FZOs+OTrkrWs7YAOK8ythnc6Y19D6O8L6npt/ai5ttu30FdIk0DyeaBha8D+GGuLauYJpcxe5r0i+8XafbkRRygCtqFDocVad3c7c3MA70w30KmvPD4zse8w/OmHxlYf89l/Oup4R3MT0Oa+Q2UxQ8ha+UPiLd/aPGbu8jZB6Zr2K98b2kVnII5VOR6182eN9dW68XkxNkMe1dlLD2Q4s2tCaK51Ha7HAPevaLFEHhSREPASvB9E3JOsgOMmvVG11NP8JuXccpVulZnTGRxGlSlPiCw9Hr2l/EQt7RELdBXz/4d1JLzxo0wIwWr1G9DSRjB60+UUJ6nU3/iXzrBcNRXKmErYKCaK6Ix0OKvL3zy6zsLa0tm3AMa5zWIAlx9oh4IORXQRXcMkBLNWFr1xEsB2MKFTTOeVRo1bDxfePo4sZMlQMVj3E6faS4+UnmuVt9SuftQjU8ZrVv5ClsJOrEVy1qKOijUuegeDdbMepxxPJhO5zXSeLtQ8mQSW8+cjsa8a0u41JnDW0L59q6S4s/ENzZK7xSHPasqUVGVzZxbNCTX7pVz5p/OoBrt/K2I3Y/jUdjoOoPg3ML49xXT2GmWNsAZIfm966pTQcpmW0+oyQuZ2YAjiuHvrO6GvGaZTjPBNerXhheALEoXFcvqqxm4XcBW0KisVylfS5XjK5/CtbxLezv4ZKgkfLS2Omi5RDEQT7VB4tt7i10UhlIGKzlNNivY5LwJNKNdO4nO6vb5bhxZq3oK8K8Fy7ddBI/ir3yGAS2MeejCkmKDuxy3Pm6cpJxRRcWphtgqdKK6I7HPW+I+a7bXpZrYiPdTHGoXxChWINdT4f8ADlqLZmaMZ9CK6W10+zTgxqpHtShKzOeUGzgLbw1qPliSOMljXpHgv4fPq6A6muB71YUGFQ0cfyjviun0bxOtpb+WsYDVnW12N6C5dzqtB+H2j6fOAIUYD1FdO+gaYH8tbePaPauYsPEzSR4xgmtyDWP9HyeWricWjv542J20DTH+QQoPwqrceAbO4XemBUo1Vd2e9WY9dZVxurJ81xKcTldR8AqkLFO3SvHfGGjahZXDbEYqD2FfQt74hVIDvIOa5G/FjqG7zlU5rWDaQ3OJ4noHidNMmC3IbI7Gr/ivxbb6tpZjiTtXX3vgjSLmUyKigmsq4+Hds0TeWwp3aZhUkmtDyLR9U+xap5mMYOa9V0Px39qeO3H8PFYR+G5hu2ZuhrZ8N+B4dO1AzvJuyelaRdznhJxd2egPfmexR8dRRSgRPELe1TfIo5UUV1xTsY1aqcjmvG3g250C7RrCTbH3Fcrb6pHHKI7pcsOtFFNxQKbsbMuu2n2URRxgDFQ22pW4bO2iijlQc7N2012CIAha0l8WRhcKtFFKUUHOxD4rUdFph8W+1FFYqCDnZFJ4pikGJlyKaPEdl/zzoop8iHzMcPEVl2j/AFpH8QRMMRLiiilyIamynN4ihhOZ4wRSw6rFqQxYrseiitacFczqSZ7P8I/h3JLK+sam/mLJ0BFFFFd8IKxwTk7n/9k=)"></div><div><b>Golden Hour</b><small>JVKE</small></div><button class="play" aria-label="Play"><svg class="pl" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8c0 .9 1 1.4 1.7.9l9.4-6.4c.6-.4.6-1.3 0-1.8L10.2 4.7c-.7-.5-1.7 0-1.7.9z" fill="#6c5ce7" stroke="#6c5ce7" stroke-width="1.6" stroke-linejoin="round"/></svg><svg class="ps" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.8" height="14" rx="1.6" fill="#6c5ce7"/><rect x="13.7" y="5" width="3.8" height="14" rx="1.6" fill="#6c5ce7"/></svg></button></div>
@@ -711,7 +785,7 @@ document.addEventListener("keydown",function(e){var t=e.target;
  if(e.key==="Escape"){$$(".menu.open").forEach(function(m){m.classList.remove("open")});$("#md").classList.remove("open");if(q.value){q.value="";go(curNav)}}});
 q.addEventListener("input",function(){var raw=q.value.trim(),id=yid(raw);if(id){showYT(addYT(id));return}
  var pl=ylist(raw);if(pl){ytPlaylist(pl);return}
- if(/^https?:\/\//i.test(raw)){show(head("Link chưa hỗ trợ","")+ytMsg("Chỉ phát trực tiếp được link YouTube. Với Spotify, SoundCloud… hãy gõ tên bài hát rồi nhấn Enter để tìm trên nhiều nền tảng."));return}
+ if(/^https?:\/\//i.test(raw)){show(head("Unsupported link","")+ytMsg("Only YouTube links can be played directly. For Spotify, SoundCloud… type the song name and press Enter to search across platforms."));return}
  var v=raw.toLowerCase().replace(/[<>&"]/g,"");if(!v){go(curNav);return}
  var r=ALL.filter(function(x){return(x.t+" "+x.a).toLowerCase().indexOf(v)>-1});
  show(head("Results for “"+v+"”",r.length+" found")+(r.map(function(x){return row(x,x.id[0]==="s")}).join("")||'<div class="empty">No matches. Try another song or artist, or paste a YouTube link.</div>')+ytPrompt(raw))});
@@ -725,17 +799,17 @@ function ylist(v){var m=v.match(/youtube\.com\/[^\s]*[?&]list=([\w-]+)/);return 
 function ytMsg(m){return'<div class="empty">'+m+'</div>'}
 function ytRows(l){return l.map(function(r){RES[r.id]=r;return'<div class="song" data-ytr="'+r.id+'"><div class="th" style="background-image:'+ytimg(r.id)+'"></div><div><b>'+esc(r.t)+'</b><small>'+esc(r.a)+'</small></div><button class="play" data-ytr="'+r.id+'" aria-label="Play">'+PL+'</button></div>'}).join("")}
 function ytGet(u){if(YC[u])return Promise.resolve(YC[u]);return fetch(u).then(function(r){return r.json()}).then(function(j){if(j.error){var e=j.error.errors&&j.error.errors[0];throw e&&e.reason||"error"}YC[u]=j;return j})}
-function ytErr(c){return c==="nokey"?"Tính năng tìm trên YouTube chưa được bật (chưa có YT_KEY).":c==="quotaExceeded"||c==="dailyLimitExceeded"?"Hôm nay đã hết lượt tìm kiếm YouTube miễn phí. Hãy thử lại vào ngày mai, hoặc dán trực tiếp link bài hát.":/key|referer|accessNotConfigured|forbidden/i.test(c)?"API key YouTube chưa đúng hoặc chưa được phép dùng cho trang này.":"Không tìm được lúc này (lỗi mạng?). Hãy thử lại."}
+function ytErr(c){return c==="nokey"?"YouTube search is not enabled (missing YT_KEY).":c==="quotaExceeded"||c==="dailyLimitExceeded"?"Today's free YouTube search quota has run out. Try again tomorrow, or paste a song link directly.":/key|referer|accessNotConfigured|forbidden/i.test(c)?"The YouTube API key is invalid or not allowed for this site.":"Couldn't search right now (network error?). Please try again."}
 function ytApi(path){if(!YT_KEY)return Promise.reject("nokey");return ytGet("https://www.googleapis.com/youtube/v3/"+path+"&key="+encodeURIComponent(YT_KEY))}
 function ytFind(query){return ytApi("search?part=snippet&type=video&videoEmbeddable=true&maxResults=15&q="+encodeURIComponent(query)).then(function(j){return j.items.filter(function(i){return i.id&&i.id.videoId}).map(function(i){return{id:i.id.videoId,t:clean(i.snippet.title),a:clean(i.snippet.channelTitle)}})})}
 function ytFill(html,sub){var b=$("#ytres");if(b)b.innerHTML=html;var s=$("#ytsub");if(s&&sub!=null)s.textContent=sub}
 function ytRel(x){if(!YT_KEY||!x||!x.t||x.t==="YouTube video")return;var id=x.yt;
- ytFind(x.t).then(function(l){if(yid(q.value)!==id)return;l=l.filter(function(r){return r.id!==id});ytFill(l.length?head("Bài cùng tên / tương tự",l.length+" kết quả")+ytRows(l):"")}).catch(function(){})}
+ ytFind(x.t).then(function(l){if(yid(q.value)!==id)return;l=l.filter(function(r){return r.id!==id});ytFill(l.length?head("Bài cùng tên / tương tự",l.length+" found")+ytRows(l):"")}).catch(function(){})}
 function ytPlaylist(pid){
- show(head("YouTube playlist",'<i id="ytsub" style="font-style:normal">đang tải…</i>')+'<div id="ytres">'+ytMsg("Đang tải playlist…")+'</div>');
+ show(head("YouTube playlist",'<i id="ytsub" style="font-style:normal">loading…</i>')+'<div id="ytres">'+ytMsg("Loading playlist…")+'</div>');
  ytApi("playlistItems?part=snippet&maxResults=30&playlistId="+encodeURIComponent(pid)).then(function(j){if(ylist(q.value)!==pid)return;
   var l=j.items.filter(function(i){return i.snippet&&i.snippet.resourceId&&i.snippet.resourceId.videoId&&!/^(Private|Deleted) video$/.test(i.snippet.title)}).map(function(i){return{id:i.snippet.resourceId.videoId,t:clean(i.snippet.title),a:clean(i.snippet.videoOwnerChannelTitle||i.snippet.channelTitle)}});
-  ytFill(l.length?ytRows(l):ytMsg("Playlist trống hoặc ở chế độ riêng tư."),l.length+" bài")}).catch(function(c){if(ylist(q.value)===pid)ytFill(ytMsg(ytErr(c)),"")})}
+  ytFill(l.length?ytRows(l):ytMsg("Playlist is empty or private."),l.length+" tracks")}).catch(function(c){if(ylist(q.value)===pid)ytFill(ytMsg(ytErr(c)),"")})}
 function ytPlay(id){var r=RES[id],x=addYT(id);if(r){x.t=r.t;x.a=r.a;save()}play(x.id,true)}
 function xImg(u){return/^https:\/\//.test(u||"")?"url('"+encodeURI(u).replace(/['"()]/g,function(c){return"%"+c.charCodeAt(0).toString(16)})+"')":G[0]}
 var XR={};
@@ -748,14 +822,14 @@ function xJson(u){if(YC[u])return Promise.resolve(YC[u]);return fetch(u).then(fu
 function srchAudius(query){return xJson("https://api.audius.co/v1/tracks/search?limit=10&app_name=MiaMusic&query="+encodeURIComponent(query)).then(function(j){return(j.data||[]).filter(function(t){return t.is_streamable!==false}).map(function(t){return{id:t.id,t:clean(t.title),a:clean(t.user&&t.user.name),src:"https://api.audius.co/v1/tracks/"+encodeURIComponent(t.id)+"/stream?app_name=MiaMusic",img:t.artwork&&(t.artwork["150x150"]||t.artwork["480x480"])}})})}
 function srchItunes(query){return xJson("https://itunes.apple.com/search?media=music&entity=song&limit=10&term="+encodeURIComponent(query)).then(function(j){return(j.results||[]).filter(function(t){return t.previewUrl}).map(function(t){return{id:t.trackId,t:clean(t.trackName),a:clean(t.artistName),src:t.previewUrl,img:(t.artworkUrl100||"").replace("100x100","200x200")}})})}
 function lkRow(v){var e=encodeURIComponent(v),L=[["Spotify","https://open.spotify.com/search/"+e],["Apple Music","https://music.apple.com/search?term="+e],["YouTube Music","https://music.youtube.com/search?q="+e],["SoundCloud","https://soundcloud.com/search?q="+e],["Deezer","https://www.deezer.com/search/"+e],["Zing MP3","https://zingmp3.vn/tim-kiem/tat-ca?q="+e],["NhacCuaTui","https://www.nhaccuatui.com/tim-kiem?q="+e],["Bandcamp","https://bandcamp.com/search?q="+e],["Tidal","https://tidal.com/search?q="+e]];
- return head("Mở tìm kiếm trên nền tảng khác","")+'<p class="empty" style="padding:0 0 8px;text-align:left">Các trang này không cho nhúng phát trực tiếp, bấm để mở tab mới:</p><div class="plact">'+L.map(function(x){return'<a class="btn gh lk" target="_blank" rel="noopener noreferrer" href="'+x[1]+'">'+x[0]+' ↗</a>'}).join("")+'</div>'}
+ return head("Search on other platforms","")+'<p class="empty" style="padding:0 0 8px;text-align:left">These sites do not allow embedded playback. Click to open in a new tab:</p><div class="plact">'+L.map(function(x){return'<a class="btn gh lk" target="_blank" rel="noopener noreferrer" href="'+x[1]+'">'+x[0]+' ↗</a>'}).join("")+'</div>'}
 function ytSearch(query){if(!query)return;
- show(head("Kết quả cho “"+esc(query)+"”","")+'<div id="ytres">'+(YT_KEY?ytMsg("Đang tìm trên YouTube…"):"")+'</div><div id="aures"></div><div id="itres"></div><div id="lkres">'+lkRow(query)+'</div>');
+ show(head("Results for “"+esc(query)+"”","")+'<div id="ytres">'+(YT_KEY?ytMsg("Searching YouTube…"):"")+'</div><div id="aures"></div><div id="itres"></div><div id="lkres">'+lkRow(query)+'</div>');
  var ok=function(){return q.value.trim()===query};
- if(YT_KEY)ytFind(query).then(function(l){if(ok())ytFill(head("YouTube",l.length+" kết quả")+(l.length?ytRows(l):ytMsg("Không thấy kết quả.")))}).catch(function(c){if(ok())ytFill(head("YouTube","")+ytMsg(ytErr(c)))});
- srchAudius(query).then(function(l){if(ok())xFill("aures","Audius · nghe đủ bài",l.length?xRows(l,"aud"):"")}).catch(function(){});
- srchItunes(query).then(function(l){if(ok())xFill("itres","Apple Music · nghe thử 30 giây",l.length?xRows(l,"itn"):"")}).catch(function(){})}
-function ytPrompt(v){return'<button class="btn ytb" data-ytq="1">🔍 Tìm “'+esc(v)+'” trên mọi nền tảng</button><p class="empty" style="padding:8px 0 0">hoặc nhấn Enter</p>'}
+ if(YT_KEY)ytFind(query).then(function(l){if(ok())ytFill(head("YouTube",l.length+" found")+(l.length?ytRows(l):ytMsg("No results found.")))}).catch(function(c){if(ok())ytFill(head("YouTube","")+ytMsg(ytErr(c)))});
+ srchAudius(query).then(function(l){if(ok())xFill("aures","Audius · full tracks",l.length?xRows(l,"aud"):"")}).catch(function(){});
+ srchItunes(query).then(function(l){if(ok())xFill("itres","Apple Music · 30-second preview",l.length?xRows(l,"itn"):"")}).catch(function(){})}
+function ytPrompt(v){return'<button class="btn ytb" data-ytq="1">🔍 Search “'+esc(v)+'” on all platforms</button><p class="empty" style="padding:8px 0 0">or press Enter</p>'}
 
 var mq=matchMedia("(max-width:760px),(max-height:500px) and (max-width:1000px)"),prem0=$(".prem"),disc0=$(".disc");
 function place(){if(mq.matches)main.insertBefore(prem0,disc0);else $(".side").appendChild(prem0);fit()}
@@ -764,6 +838,9 @@ function fit(){var a=$(".app");a.style.zoom="";if(mq.matches)return;var s=Math.m
 addEventListener("resize",fit);addEventListener("resize",fitRecent);addEventListener("load",fit);addEventListener("load",fitRecent);place();
 })();
 </script>
+
+<div class="langpanel notranslate" id="langpanel" translate="no" role="dialog" aria-label="Choose language"><h3>Language</h3><input id="langq" type="search" placeholder="Search language..." autocomplete="off" aria-label="Search language"><div class="langlist" id="langlist"></div></div>
+<div id="gte" class="notranslate" translate="no"></div>
 <script>
 /* ===== Dialog Đăng nhập / Đăng ký / Hồ sơ (không cần server) =====
  Lưu ý: mật khẩu được băm (PBKDF2) và lưu trong localStorage của CHÍNH trình duyệt này.
@@ -867,6 +944,42 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&ov.classLis
 window.MIA_AUTH={open:open,logout:logout};
 apply();
 try{var fl=sessionStorage.getItem("mia_flash");if(fl){sessionStorage.removeItem("mia_flash");setTimeout(function(){toast(fl)},500)}}catch(e){}
+})();
+
+/* ===== Language switcher (Google Website Translator, ~130 languages) ===== */
+(function(){
+var L=[["en","English","English"],["af","Afrikaans","Afrikaans"],["sq","Albanian","Shqip"],["am","Amharic","አማርኛ"],["ar","Arabic","العربية"],["hy","Armenian","Հայերեն"],["az","Azerbaijani","Azərbaycan"],["eu","Basque","Euskara"],["be","Belarusian","Беларуская"],["bn","Bengali","বাংলা"],["bs","Bosnian","Bosanski"],["bg","Bulgarian","Български"],["my","Burmese","မြန်မာ"],["ca","Catalan","Català"],["ceb","Cebuano","Cebuano"],["ny","Chichewa","Chichewa"],["zh-CN","Chinese (Simplified)","简体中文"],["zh-TW","Chinese (Traditional)","繁體中文"],["co","Corsican","Corsu"],["hr","Croatian","Hrvatski"],["cs","Czech","Čeština"],["da","Danish","Dansk"],["nl","Dutch","Nederlands"],["eo","Esperanto","Esperanto"],["et","Estonian","Eesti"],["tl","Filipino","Filipino"],["fi","Finnish","Suomi"],["fr","French","Français"],["fy","Frisian","Frysk"],["gl","Galician","Galego"],["ka","Georgian","ქართული"],["de","German","Deutsch"],["el","Greek","Ελληνικά"],["gu","Gujarati","ગુજરાતી"],["ht","Haitian Creole","Kreyòl ayisyen"],["ha","Hausa","Hausa"],["haw","Hawaiian","ʻŌlelo Hawaiʻi"],["iw","Hebrew","עברית"],["hi","Hindi","हिन्दी"],["hmn","Hmong","Hmoob"],["hu","Hungarian","Magyar"],["is","Icelandic","Íslenska"],["ig","Igbo","Igbo"],["id","Indonesian","Bahasa Indonesia"],["ga","Irish","Gaeilge"],["it","Italian","Italiano"],["ja","Japanese","日本語"],["jw","Javanese","Basa Jawa"],["kn","Kannada","ಕನ್ನಡ"],["kk","Kazakh","Қазақ тілі"],["km","Khmer","ខ្មែរ"],["rw","Kinyarwanda","Kinyarwanda"],["ko","Korean","한국어"],["ku","Kurdish","Kurdî"],["ky","Kyrgyz","Кыргызча"],["lo","Lao","ລາວ"],["la","Latin","Latina"],["lv","Latvian","Latviešu"],["lt","Lithuanian","Lietuvių"],["lb","Luxembourgish","Lëtzebuergesch"],["mk","Macedonian","Македонски"],["mg","Malagasy","Malagasy"],["ms","Malay","Bahasa Melayu"],["ml","Malayalam","മലയാളം"],["mt","Maltese","Malti"],["mi","Maori","Māori"],["mr","Marathi","मराठी"],["mn","Mongolian","Монгол"],["ne","Nepali","नेपाली"],["no","Norwegian","Norsk"],["or","Odia","ଓଡ଼ିଆ"],["ps","Pashto","پښتو"],["fa","Persian","فارسی"],["pl","Polish","Polski"],["pt","Portuguese","Português"],["pa","Punjabi","ਪੰਜਾਬੀ"],["ro","Romanian","Română"],["ru","Russian","Русский"],["sm","Samoan","Gagana Samoa"],["gd","Scottish Gaelic","Gàidhlig"],["sr","Serbian","Српски"],["st","Sesotho","Sesotho"],["sn","Shona","Shona"],["sd","Sindhi","سنڌي"],["si","Sinhala","සිංහල"],["sk","Slovak","Slovenčina"],["sl","Slovenian","Slovenščina"],["so","Somali","Soomaali"],["es","Spanish","Español"],["su","Sundanese","Basa Sunda"],["sw","Swahili","Kiswahili"],["sv","Swedish","Svenska"],["tg","Tajik","Тоҷикӣ"],["ta","Tamil","தமிழ்"],["tt","Tatar","Татар"],["te","Telugu","తెలుగు"],["th","Thai","ไทย"],["tr","Turkish","Türkçe"],["tk","Turkmen","Türkmen"],["uk","Ukrainian","Українська"],["ur","Urdu","اردو"],["ug","Uyghur","ئۇيغۇرچە"],["uz","Uzbek","Oʻzbek"],["vi","Vietnamese","Tiếng Việt"],["cy","Welsh","Cymraeg"],["xh","Xhosa","isiXhosa"],["yi","Yiddish","ייִדיש"],["yo","Yoruba","Yorùbá"],["zu","Zulu","isiZulu"]];
+var btn=document.getElementById("langbtn"),pan=document.getElementById("langpanel"),inp=document.getElementById("langq"),list=document.getElementById("langlist");
+if(!btn||!pan)return;
+var cur="en",loading=false;
+try{cur=localStorage.getItem("lang")||"en"}catch(e){}
+function esc2(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function render(f){f=(f||"").trim().toLowerCase();var h="";L.forEach(function(x){if(f&&(x[1]+" "+x[2]+" "+x[0]).toLowerCase().indexOf(f)<0)return;h+='<button type="button" data-c="'+x[0]+'" class="'+(x[0]===cur?"on":"")+'"><span>'+esc2(x[2])+'</span><small>'+esc2(x[1])+'</small></button>'});list.innerHTML=h||'<div class="langempty">No language found</div>'}
+function place(){var r=btn.getBoundingClientRect(),w=Math.min(280,window.innerWidth-24);var left=Math.max(12,Math.min(r.right-w,window.innerWidth-w-12));pan.style.left=left+"px";pan.style.top=(r.bottom+8)+"px"}
+function open(){render("");inp.value="";place();pan.classList.add("open");btn.setAttribute("aria-expanded","true");setTimeout(function(){inp.focus()},0)}
+function close(){pan.classList.remove("open");btn.setAttribute("aria-expanded","false")}
+btn.addEventListener("click",function(e){e.stopPropagation();pan.classList.contains("open")?close():open()});
+document.addEventListener("click",function(e){if(!pan.contains(e.target)&&e.target!==btn)close()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
+window.addEventListener("resize",function(){if(pan.classList.contains("open"))place()});
+inp.addEventListener("input",function(){render(inp.value)});
+list.addEventListener("click",function(e){var b=e.target.closest("button[data-c]");if(b){choose(b.dataset.c)}});
+window.googleTranslateElementInit=function(){new google.translate.TranslateElement({pageLanguage:"en",autoDisplay:false},"gte")};
+function load(cb){if(window.google&&google.translate&&document.querySelector("select.goog-te-combo"))return cb();if(!loading){loading=true;var sc=document.createElement("script");sc.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";sc.onerror=function(){loading=false;alert("Could not load the translation service. Check your internet connection.")};document.head.appendChild(sc)}var n=0;(function w(){if(document.querySelector("select.goog-te-combo"))return cb();if(++n<60)setTimeout(w,250)})()}
+function setCookie(v){var d=location.hostname,x="; path=/";document.cookie="googtrans="+v+x;document.cookie="googtrans="+v+x+"; domain="+d}
+function clearCookie(){var past="=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";document.cookie="googtrans"+past;document.cookie="googtrans"+past+"; domain="+location.hostname}
+function apply(c){load(function(){var s=document.querySelector("select.goog-te-combo");if(!s)return;s.value=c;s.dispatchEvent(new Event("change"))})}
+function choose(c){cur=c;try{localStorage.setItem("lang",c)}catch(e){}close();
+ if(c==="en"){if(/translated-/.test(document.documentElement.className)||document.cookie.indexOf("googtrans")>=0){clearCookie();location.reload()}return}
+ apply(c)}
+if(cur!=="en")setTimeout(function(){apply(cur)},400);
+})();
+
+/* wrap bare label text so it can be clamped with an ellipsis in any language */
+(function(){
+function wrap(root){(root||document).querySelectorAll(".nav,.card h3,.leg p").forEach(function(el){
+ var n=el.firstChild;for(n=el.firstChild;n;n=n.nextSibling){if(n.nodeType===3&&n.nodeValue.trim()){var sp=document.createElement("span");sp.className=el.matches(".nav")?"nl":"hl";n.parentNode.insertBefore(sp,n);sp.appendChild(n);break}}})}
+wrap();var t;try{new MutationObserver(function(){clearTimeout(t);t=setTimeout(wrap,60)}).observe(document.body,{childList:true,subtree:true})}catch(e){}
 })();
 </script>
 
