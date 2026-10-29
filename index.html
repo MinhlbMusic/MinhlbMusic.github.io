@@ -1128,5 +1128,30 @@ wrap();var t;try{new MutationObserver(function(){clearTimeout(t);t=setTimeout(wr
 })();
 </script>
 
+<style id="anti-copy-css">
+html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text}
+img,svg,video,canvas{-webkit-user-drag:none;user-drag:none}
+@media print{html,body{display:none!important}}
+</style>
+<script id="anti-copy-js">
+/* Chặn copy ở mức cơ bản (răn đe): chuột phải, bôi đen, copy/cut, kéo thả, lưu/xem nguồn/in, phím mở DevTools.
+   Ô nhập (tìm kiếm, đăng nhập...) vẫn cho phép gõ, dán, copy bình thường. */
+(function(){
+function ed(t){if(t&&t.nodeType===3)t=t.parentNode;return t&&t.closest&&t.closest("input,textarea,select,[contenteditable='true']")}
+["contextmenu","copy","cut","dragstart","selectstart"].forEach(function(ev){
+ document.addEventListener(ev,function(e){if(!ed(e.target))e.preventDefault()},true)});
+document.addEventListener("keydown",function(e){
+ var k=(e.key||"").toLowerCase(),m=e.ctrlKey||e.metaKey,bad=false;
+ if(k==="f12")bad=true;
+ else if(m&&e.shiftKey&&"ijc".indexOf(k)>-1&&k.length===1)bad=true;
+ else if(e.metaKey&&e.altKey&&"iujc".indexOf(k)>-1&&k.length===1)bad=true;
+ else if(m&&"usp".indexOf(k)>-1&&k.length===1)bad=true;
+ else if(m&&"acx".indexOf(k)>-1&&k.length===1&&!ed(e.target))bad=true;
+ if(bad){e.preventDefault();e.stopPropagation()}
+},true);
+document.addEventListener("copy",function(e){if(!ed(e.target)&&e.clipboardData)e.clipboardData.setData("text/plain","")},true);
+})();
+</script>
 </body>
 </html>
