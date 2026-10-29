@@ -521,12 +521,14 @@ font{background:none!important;box-shadow:none!important}
  .menu button.mo{display:block}
  .menu button{padding:11px 14px;font-size:13px}.card h3 .menu{min-width:150px}
  /* tab bar */
- .app>.side{display:flex;flex-direction:row;align-items:stretch;justify-content:space-between;gap:2px;padding:6px;overflow:visible}
+ /* Thanh menu dưới: đủ 7 mục như PC, VUỐT ngang để xem tiếp (hiện ~5,5 mục để người dùng thấy còn mục phía sau) */
+ .app>.side{display:flex;flex-direction:row;align-items:stretch;justify-content:flex-start;gap:2px;padding:7px 6px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding:0 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
+ .app>.side::-webkit-scrollbar{display:none}
  .app>.side .hi,.app>.side .ava,.app>.side .prem{display:none!important}
- .app>.side .nav:nth-of-type(n+6){display:none}
- .app>.side .nav{flex:1 1 0;min-width:0;height:56px;margin:0;padding:0 2px;gap:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:20px;font-size:10.5px;line-height:1.1}
+ .app>.side .nav{flex:0 0 auto;min-width:max(52px,calc(18.18% - 2px));scroll-snap-align:start;height:56px;margin:0;padding:0 2px;gap:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:20px;font-size:10.5px;line-height:1.1}
+ .app>.side .nav.on{box-shadow:0 2px 5px rgba(70,50,150,.28),inset 2px 2px 4px #fff,inset -2px -3px 5px rgba(160,130,210,.25)}
  .app>.side .nav svg{width:22px;height:22px;flex:none;margin:0}
- .app>.side .nav{font-size:clamp(9px,2.75vw,10.5px);letter-spacing:-.1px;padding:0 1px}
+ .app>.side .nav{font-size:clamp(9px,2.75vw,10.5px);letter-spacing:-.1px;padding:0 6px}
  .app>.side .nav .nl,.app>.side .nav>font{display:block;flex:0 0 auto;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;word-break:normal;-webkit-line-clamp:unset;line-clamp:unset;line-height:1.25}
  /* header */
  .main>.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px 8px}
@@ -537,6 +539,10 @@ font{background:none!important;box-shadow:none!important}
  .main>.top .search{order:5;flex:1 0 100%;width:100%;max-width:none;height:48px;margin:0;padding:0 16px}
  .main>.top .search svg{width:18px;height:18px}
  .main>.top .search input{font-size:16px}
+}
+@media (min-width:560px) and (max-width:760px),(max-height:500px) and (min-width:560px) and (max-width:1000px){
+ .app>.side{justify-content:space-between}
+ .app>.side .nav{flex:1 1 0;min-width:68px}
 }
 </style>
 </head>
@@ -835,6 +841,13 @@ pg.addEventListener("input",function(){drag=true});
 pg.addEventListener("change",function(){var x=A[cur],d=0;try{d=x.yt?yp.getDuration():au.duration}catch(e){}if(d>0&&isFinite(d)){var tt=pg.value/1000*d;if(x.yt)yp.seekTo(tt,true);else au.currentTime=tt}drag=false});
 if(window.ResizeObserver)new ResizeObserver(function(){document.documentElement.style.setProperty("--dk",(dock.hidden?0:dock.offsetHeight+12)+"px")}).observe(dock);
 $$(".nav").forEach(function(b){b.dataset.go=b.textContent.trim()});
+/* Thanh menu dưới (điện thoại): vuốt cảm ứng là native; thêm lăn chuột và kéo chuột cho cửa sổ trình duyệt thu nhỏ */
+(function(){var sd=$(".side");if(!sd)return;var dn=false,mv=false,sx=0,sl=0;
+ sd.addEventListener("wheel",function(e){if(!mq.matches||sd.scrollWidth<=sd.clientWidth||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;sd.scrollLeft+=e.deltaY;e.preventDefault()},{passive:false});
+ sd.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse"||e.button!==0||!mq.matches)return;dn=true;mv=false;sx=e.clientX;sl=sd.scrollLeft});
+ window.addEventListener("pointermove",function(e){if(!dn)return;var d=e.clientX-sx;if(!mv&&Math.abs(d)>5){mv=true;sd.style.scrollSnapType="none"}if(mv)sd.scrollLeft=sl-d});
+ window.addEventListener("pointerup",function(){if(!dn)return;dn=false;sd.style.scrollSnapType=""});
+ sd.addEventListener("click",function(e){if(mv){e.stopPropagation();e.preventDefault();mv=false}},true)})();
 var ics=$$(".top .ic");ics[0].dataset.m="n";ics[1].dataset.m="u";ics[0].querySelector("i").id="bd";
 var wk=$$(".card h3 span").filter(function(s){return /This Week/.test(s.textContent)})[0];wk.dataset.m="w";
 $$(".card h3 span").forEach(function(s){if(s.textContent.trim()==="See All")s.dataset.go=$(".card",s.closest(".card").parentNode)===s.closest(".card")?"My Music":"Playlists"});
