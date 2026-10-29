@@ -7,7 +7,7 @@
 <script>
 /* ===== TÀI KHOẢN — chạy hoàn toàn trên trình duyệt (localStorage), không cần server/DB =====
  Mỗi tài khoản có kho dữ liệu riêng: mọi khoá "mia_*" (playlist, yêu thích, lịch sử...) tự được gắn thêm tiền tố "u:<tên>:".
- Chưa đăng nhập = chế độ khách (dùng khoá gốc). Đổi tên khách ở GUEST bên dưới. */
+ Not logged in = chế độ khách (dùng khoá gốc). Đổi tên khách ở GUEST bên dưới. */
 (function(){
 var GUEST="Guest";
 var P=Storage.prototype,gi=P.getItem,si=P.setItem,ri=P.removeItem,has=function(o,k){return Object.prototype.hasOwnProperty.call(o,k)};
@@ -421,6 +421,32 @@ body{top:0!important}
 .skiptranslate>iframe,iframe.skiptranslate,#goog-gt-tt,.goog-te-balloon-frame{display:none!important}
 #gte{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden}
 font{background:none!important;box-shadow:none!important}
+
+/* ===== Mobile layout v2 (placed last so it wins over the text-overflow safety net above) =====
+   - bottom tab bar: 5 equal tabs, icon+label centred, no stray "Hi, Guest" text
+   - header: [title] [language] [bell] [avatar] on row 1, full-width search on row 2
+   - Activity & Settings live in the avatar menu on phones */
+.menu button.mo{display:none}
+@media (max-width:760px),(max-height:500px) and (max-width:1000px){
+ .menu button.mo{display:block}
+ /* tab bar */
+ .app>.side{display:flex;flex-direction:row;align-items:stretch;justify-content:space-between;gap:2px;padding:6px;overflow:visible}
+ .app>.side .hi,.app>.side .ava,.app>.side .prem{display:none!important}
+ .app>.side .nav:nth-of-type(n+6){display:none}
+ .app>.side .nav{flex:1 1 0;min-width:0;height:56px;margin:0;padding:0 2px;gap:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:20px;font-size:10.5px;line-height:1.1}
+ .app>.side .nav svg{width:22px;height:22px;flex:none;margin:0}
+ .app>.side .nav{font-size:clamp(9px,2.75vw,10.5px);letter-spacing:-.1px;padding:0 1px}
+ .app>.side .nav .nl,.app>.side .nav>font{display:block;flex:0 0 auto;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;word-break:normal;-webkit-line-clamp:unset;line-clamp:unset;line-height:1.25}
+ /* header */
+ .main>.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px 8px}
+ .main>.top h1{order:1;flex:1 1 0;min-width:0;margin:0;font-size:22px}
+ .main>.top .langbtn{order:2;flex:none;width:40px;height:40px;margin:0}
+ .main>.top .ic{order:3;flex:none;width:40px;height:40px;margin:0}
+ .main>.top .ic.p{order:4;margin:0}
+ .main>.top .search{order:5;flex:1 0 100%;width:100%;max-width:none;height:48px;margin:0;padding:0 16px}
+ .main>.top .search svg{width:18px;height:18px}
+ .main>.top .search input{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -520,7 +546,7 @@ font{background:none!important;box-shadow:none!important}
 /* Khoá API YouTube để bật tìm kiếm theo tên (xem hướng dẫn trong chat). Để trống = chỉ dán link. */
 var YT_KEY="";
 var LIB=[
- {t:"YouTube video (đổi tên ở đây)",a:"YouTube",yt:"TgT7yKv_Iwc",img:"url(https://i.ytimg.com/vi/TgT7yKv_Iwc/hqdefault.jpg)"},
+ {t:"YouTube video (rename here)",a:"YouTube",yt:"TgT7yKv_Iwc",img:"url(https://i.ytimg.com/vi/TgT7yKv_Iwc/hqdefault.jpg)"},
  {t:"Beats to Sleep / Chill",a:"Lofi Girl",yt:"5qap5aO4i9A"},
  {t:"Demo tone A",a:"Local file",src:"music/demo-a.wav"},
  {t:"Demo tone B",a:"Local file",src:"music/demo-b.wav"},
@@ -570,27 +596,27 @@ var WD={"This Week":[62,80,64,92,61,81,67],"Last Week":[48,66,72,58,84,70,52],"T
 var c=["#a98be3","#f7a9c5","#f8a24d","#fdd37a","#9ccb74","#72b5ee","#a98be3"],DY=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 var N=["🎵 New release from JVKE","❤️ You hit a 7-day streak","⭐ Your Daily Mix was updated"],W=Object.keys(WD);
 function bars(){$("#bars").innerHTML=d.map(function(h,i){return '<div class="col"><u style="height:'+h+'%;background:linear-gradient(90deg,'+c[i]+','+c[i]+'dd)"></u></div>'}).join("")}
-function row(x,heart,extra){return '<div class="song" data-id="'+x.id+'"><div class="th" style="background-image:'+x.img+'"></div><div><b>'+x.t+'</b><small>'+x.a+'</small></div>'+(heart?'<button class="hb'+(x.fav?' on':'')+'" data-fav="'+x.id+'" aria-label="Favorite">♥</button><button class="ab" data-add="'+x.id+'" aria-label="Add to playlist" title="Thêm vào playlist">＋</button><button class="ab pd'+(x.pod?' on':'')+'" data-pod="'+x.id+'" aria-label="Podcast" title="'+(x.pod?'Bỏ khỏi Podcasts':'Thêm vào Podcasts')+'">🎙</button>':'')+(extra||'')+'<button class="play" data-id="'+x.id+'" aria-label="Play">'+PL+'</button></div>'}
+function row(x,heart,extra){return '<div class="song" data-id="'+x.id+'"><div class="th" style="background-image:'+x.img+'"></div><div><b>'+x.t+'</b><small>'+x.a+'</small></div>'+(heart?'<button class="hb'+(x.fav?' on':'')+'" data-fav="'+x.id+'" aria-label="Favorite">♥</button><button class="ab" data-add="'+x.id+'" aria-label="Add to playlist" title="Add to playlist">＋</button><button class="ab pd'+(x.pod?' on':'')+'" data-pod="'+x.id+'" aria-label="Podcast" title="'+(x.pod?'Remove from Podcasts':'Add to Podcasts')+'">🎙</button>':'')+(extra||'')+'<button class="play" data-id="'+x.id+'" aria-label="Play">'+PL+'</button></div>'}
 /* dòng playlist do người dùng tạo: bấm vào dòng để mở, bấm ▶ để phát */
 var blOpen=null;
 function brow(x){return '<div class="song" data-bl="'+x.id+'"><div class="th" style="background-image:'+x.img+'"></div><div><b>'+x.t+'</b><small>'+x.a+'</small></div><button class="play" data-id="'+x.id+'" aria-label="Play">'+PL+'</button></div>'}
 function blView(id){var x=A[id];if(!x)return V.Playlists();var l=x.list==="all"?music():music().filter(function(s){return s.src});
- return head(x.t,l.length+" songs")+'<div class="plact"><button class="btn" data-id="'+id+'">▶ Play all</button><button class="btn gh" data-go="Playlists">← Back</button><button class="btn gh" data-mix="'+id+'">⭐ Đặt làm Daily Mix</button></div>'+(rows(l,1)||'<div class="empty">Chưa có bài nào trong danh sách này.</div>')}
+ return head(x.t,l.length+" songs")+'<div class="plact"><button class="btn" data-id="'+id+'">▶ Play all</button><button class="btn gh" data-go="Playlists">← Back</button><button class="btn gh" data-mix="'+id+'">⭐ Set as Daily Mix</button></div>'+(rows(l,1)||'<div class="empty">No songs in this list yet.</div>')}
 function prow(x){return '<div class="song" data-pl="'+x.pl+'"><div class="th" style="background-image:'+x.img+'"></div><div><b>'+x.t+'</b><small>'+x.a+'</small></div><button class="play" data-id="'+x.id+'" aria-label="Play">'+PL+'</button></div>'}
-function plView(i){var p=PLD[i];if(!p)return V.Playlists();var h=head(esc(p.n),plSongs(p.k).length+" songs")+'<div class="plact"><button class="btn" data-playpl="'+i+'">▶ Play all</button><button class="btn gh" data-go="Playlists">← Back</button><button class="btn gh" data-mix="p'+i+'">⭐ Đặt làm Daily Mix</button><button class="btn gh" data-delpl="'+i+'">🗑 Delete</button></div>',n=0;
- p.k.forEach(function(key,j){var x=S.filter(function(s){return fk(s)===key})[0];if(x){n++;h+=row(x,1,'<button class="ab" data-rm="'+i+'|'+j+'" aria-label="Remove" title="Xoá khỏi playlist">−</button>')}});
- return h+(n?"":'<div class="empty">Playlist trống. Bấm ＋ cạnh bài hát (My Music, Favorites…) để thêm vào đây.</div>')}
+function plView(i){var p=PLD[i];if(!p)return V.Playlists();var h=head(esc(p.n),plSongs(p.k).length+" songs")+'<div class="plact"><button class="btn" data-playpl="'+i+'">▶ Play all</button><button class="btn gh" data-go="Playlists">← Back</button><button class="btn gh" data-mix="p'+i+'">⭐ Set as Daily Mix</button><button class="btn gh" data-delpl="'+i+'">🗑 Delete</button></div>',n=0;
+ p.k.forEach(function(key,j){var x=S.filter(function(s){return fk(s)===key})[0];if(x){n++;h+=row(x,1,'<button class="ab" data-rm="'+i+'|'+j+'" aria-label="Remove" title="Remove from playlist">−</button>')}});
+ return h+(n?"":'<div class="empty">This playlist is empty. Tap ＋ next to a song (My Music, Favorites…) to add it here.</div>')}
 function rerenderPL(){if(curNav==="Playlists"&&!q.value)show(plOpen!=null?plView(plOpen):blOpen?blView(blOpen):V.Playlists())}
 function pmRender(){var k=fk(pmSong);$("#pml").innerHTML=PLD.map(function(p,i){return '<button class="pmr" data-padd="'+i+'"><span>'+(p.k.indexOf(k)>-1?"✓":"")+'</span>'+esc(p.n)+'</button>'}).join("")+'<button class="pmr" data-padd="new"><span>＋</span>New playlist…</button>'}
 function openPM(id){pmSong=A[id];if(!pmSong)return;pmRender();$("#pm").classList.add("open")}
-function askName(){return(prompt("Tên playlist mới:","")||"").trim().slice(0,40)}
+function askName(){return(prompt("New playlist name:","")||"").trim().slice(0,40)}
 function togglePL(i){var k=fk(pmSong),p;
- if(i==="new"){var n=askName();if(!n)return;PLD.push({n:n,k:[k]});toast("＋ Đã thêm vào "+n)}
- else{p=PLD[+i];if(!p)return;var j=p.k.indexOf(k);if(j>-1){p.k.splice(j,1);toast("Đã xoá khỏi "+p.n)}else{p.k.push(k);toast("＋ Đã thêm vào "+p.n)}}
+ if(i==="new"){var n=askName();if(!n)return;PLD.push({n:n,k:[k]});toast("＋ Added to "+n)}
+ else{p=PLD[+i];if(!p)return;var j=p.k.indexOf(k);if(j>-1){p.k.splice(j,1);toast("Removed from "+p.n)}else{p.k.push(k);toast("＋ Added to "+p.n)}}
  savePL();reindex();pmRender();rerenderPL()}
-function newPL(){var n=askName();if(!n)return;PLD.push({n:n,k:[]});savePL();reindex();toast("Đã tạo playlist "+n);rerenderPL()}
+function newPL(){var n=askName();if(!n)return;PLD.push({n:n,k:[]});savePL();reindex();toast("Created playlist "+n);rerenderPL()}
 function rmFromPL(s){var a=s.split("|"),p=PLD[+a[0]];if(!p)return;p.k.splice(+a[1],1);savePL();reindex();rerenderPL()}
-function delPL(i){var p=PLD[+i];if(!p||!confirm('Xoá playlist "'+p.n+'"?'))return;PLD.splice(+i,1);plOpen=null;savePL();reindex();toast("Đã xoá playlist");rerenderPL()}
+function delPL(i){var p=PLD[+i];if(!p||!confirm('Delete playlist "'+p.n+'"?'))return;PLD.splice(+i,1);plOpen=null;savePL();reindex();toast("Playlist deleted");rerenderPL()}
 function rows(l,h){return l.map(function(x){return row(x,h)}).join("")}
 function head(t,s){return '<h3>'+t+(s?'<span>'+s+'</span>':'')+'</h3>'}
 var rc=$(".song").parentNode;
@@ -639,28 +665,28 @@ function ytInit(){if(yp)return;var pv={playsinline:1,rel:0,modestbranding:1,auto
   onReady:function(){yok=true;if(isYT()){try{yp.loadVideoById(yst?{videoId:yq,startSeconds:yst}:yq)}catch(e){}}},
   onStateChange:function(e){if(!isYT())return;var st=e.data;if(st===1){on=true;errs=0;applySpeed();paint()}else if(st===2){on=false;paint()}else if(st===0)ended()},
   onError:function(e){if(!isYT())return;var c=e&&e.data;on=false;paint();
-   if(c===153||c===152){toast(location.protocol==="file:"?"YouTube không chạy khi mở file trực tiếp. Hãy mở qua https (github.io) hoặc localhost.":"YouTube từ chối nhúng video này (lỗi "+c+").");return}
+   if(c===153||c===152){toast(location.protocol==="file:"?"YouTube doesn’t work when the file is opened directly. Please open it via https (github.io) or localhost.":"YouTube refused to embed this video (error "+c+").");return}
    /* Lỗi riêng của video: ở lại, hiện lý do ngay trong khung phát, KHÔNG tự nhảy sang bài khác */
-   var why=c===100?"Video không tồn tại hoặc đã bị xoá":c===101||c===150?"Video không khả dụng hoặc không cho phép nhúng":c===2?"ID video không hợp lệ":"Video không phát được (lỗi "+c+")";
-   $("#da").textContent="⚠ "+why+" — bấm ⏭ để sang bài khác";toast("⚠ "+why);markBad(cur);
+   var why=c===100?"Video doesn’t exist or has been removed":c===101||c===150?"Video is unavailable or embedding is not allowed":c===2?"Invalid video ID":"Video can’t be played (error "+c+")";
+   $("#da").textContent="⚠ "+why+" — tap ⏭ for the next song";toast("⚠ "+why);markBad(cur);
    /* đang phát theo danh sách (Daily Mix, Explore...) thì tự bỏ qua video lỗi; bấm trực tiếp vào video thì ở lại để xem lỗi */
    if(chain&&++errs<=queue.length){var t=tok;setTimeout(function(){if(t===tok)next(1)},1200)}}}})}
 function ytLoad(id,st){yq=id;yst=st||0;if(yp){if(yok)yp.loadVideoById(yst?{videoId:id,startSeconds:yst}:id);return}
  if(window.YT&&YT.Player){ytInit();return}
- if(!yload){yload=true;window.onYouTubeIframeAPIReady=ytInit;var sc=document.createElement("script");sc.src="https://www.youtube.com/iframe_api";sc.onerror=function(){yload=false;if(isYT()){on=false;paint();toast("Không tải được YouTube. Kiểm tra mạng.")}};document.head.appendChild(sc)}}
+ if(!yload){yload=true;window.onYouTubeIframeAPIReady=ytInit;var sc=document.createElement("script");sc.src="https://www.youtube.com/iframe_api";sc.onerror=function(){yload=false;if(isYT()){on=false;paint();toast("Couldn’t load YouTube. Check your connection.")}};document.head.appendChild(sc)}}
 function load(x){cur=x.id;dock.hidden=false;dock.classList.toggle("v",!!(x.yt||isVid(x)));dock.classList.toggle("vf",isVid(x));dock.classList.toggle("pod",!!x.pod);var sb=$("#spd");if(sb)sb.textContent=speed+"\u00d7";$("#dt").textContent=x.t;$("#da").textContent=x.a;$("#dth").style.backgroundImage=x.img;
  tok++;var t=tok;
  if(x.yt){stopAudio();ytLoad(x.yt,getPos(x));
   /* nếu trình duyệt chặn tự phát, báo người dùng bấm ▶ thay vì hiện "đang phát" giả */
-  setTimeout(function(){if(t!==tok||!isYT()||!yok)return;var s;try{s=yp.getPlayerState()}catch(e){return}if(s!==1&&s!==3&&on){on=false;paint();toast("Bấm ▶ để phát video")}},4000)}
+  setTimeout(function(){if(t!==tok||!isYT()||!yok)return;var s;try{s=yp.getPlayerState()}catch(e){return}if(s!==1&&s!==3&&on){on=false;paint();toast("Tap ▶ to play the video")}},4000)}
  else{ytCmd("stopVideo");au.defaultPlaybackRate=au.playbackRate=x.pod?speed:1;x.triedAlt=0;au.src=pickSrc(x);var rp0=getPos(x);if(rp0>0)au.addEventListener("loadedmetadata",function f(){au.removeEventListener("loadedmetadata",f);if(t===tok)au.currentTime=rp0});var pr=au.play();if(pr&&pr.catch)pr.catch(function(){})}
  on=true;paint()}
 function toggle(){var x=A[cur];if(!x)return;if(x.yt){if(yp&&yok){if(on)yp.pauseVideo();else yp.playVideo()}}else{if(on)au.pause();else{var pr=au.play();if(pr&&pr.catch)pr.catch(function(){})}}}
 function next(d){if(!queue.length)return;var i=queue.indexOf(cur),n=queue.length;
  for(var k=1;k<=n;k++){var id=queue[(((i+d*k)%n)+n)%n];if(!bad[id]){play(id,true);return}}
- on=false;paint();toast("Không còn bài nào phát được trong danh sách")}
+ on=false;paint();toast("No playable songs left in the list")}
 function play(id,force){var x=A[id];if(!x)return;if(!force)chain=false;
- if(x.list){var l=x.list==="all"?music():x.list==="user"?plSongs(x.k):music().filter(function(s){return s.src});if(!l.length){toast("Chưa có bài nào trong danh sách");return}queue=l.map(function(s){return s.id});
+ if(x.list){var l=x.list==="all"?music():x.list==="user"?plSongs(x.k):music().filter(function(s){return s.src});if(!l.length){toast("No songs in the list yet");return}queue=l.map(function(s){return s.id});
   /* Daily Mix: xáo trộn thứ tự mỗi lần bấm, như một "mix" thật */
   if(x.list==="all")for(var z=queue.length-1;z>0;z--){var j=Math.random()*(z+1)|0,tmp=queue[z];queue[z]=queue[j];queue[j]=tmp}
   chain=true;return play(queue.filter(function(i){return!bad[i]})[0]||queue[0],true)}
@@ -676,10 +702,10 @@ au.onerror=function(){var x=A[cur];if(!x||x.yt)return;
  on=false;paint();var c=au.error&&au.error.code,t=tok;
  function say(m){if(t!==tok)return;$("#da").textContent="⚠ "+m;toast("⚠ "+m)}
  var ext=(x.src.split("?")[0].match(/\.(\w+)$/)||[])[1]||"?",
- why=c===3?"File bị lỗi hoặc cắt dở, không giải mã được: "+x.src:c===2?"Lỗi mạng khi tải: "+x.src:"Trình duyệt không hỗ trợ định dạng/codec của file (."+ext+"). Hãy chuyển sang mp4 H.264 + AAC bằng tools/convert-videos.py";
- if(c===4&&location.protocol!=="file:")fetch(x.src,{method:"HEAD"}).then(function(r){say(r.ok?why:"Không tìm thấy file: "+x.src+" (kiểm tra tên, thư mục, hoa/thường)")}).catch(function(){say(why)});else say(why)};
+ why=c===3?"The file is corrupted or truncated and can’t be decoded: "+x.src:c===2?"Network error while loading: "+x.src:"Your browser doesn’t support this file’s format/codec (."+ext+"). Please convert it to MP4 H.264 + AAC with tools/convert-videos.py";
+ if(c===4&&location.protocol!=="file:")fetch(x.src,{method:"HEAD"}).then(function(r){say(r.ok?why:"File not found: "+x.src+" (check the name, folder and letter case)")}).catch(function(){say(why)});else say(why)};
 /* Video có tiếng nhưng không giải mã được hình (thường do H.265/HEVC) */
-au.addEventListener("loadedmetadata",function(){var x=A[cur];if(x&&isVid(x)&&!au.videoWidth)toast("⚠ Chỉ có tiếng: trình duyệt không giải mã được hình (thường do H.265). Hãy chuyển sang H.264 bằng tools/convert-videos.py")});
+au.addEventListener("loadedmetadata",function(){var x=A[cur];if(x&&isVid(x)&&!au.videoWidth)toast("⚠ Audio only: the browser can’t decode the video (usually H.265). Please convert it to H.264 with tools/convert-videos.py")});
 function prog(){var x=A[cur],c=0,d=0;if(!x)return;try{if(x.yt){if(!yok||!yp.getDuration)return;c=yp.getCurrentTime();d=yp.getDuration()}else{c=au.currentTime;d=au.duration}}catch(e){return}
  if(x.yt&&d>43200)d=0;var ok=d>0&&isFinite(d);pg.disabled=!ok;podSave(x,c,d,ok);if(ok&&!drag)pg.value=c/d*1000;$("#tm").textContent=ok?fmt(c)+" / "+fmt(d):(x.yt&&on?"● LIVE":fmt(c))}
 setInterval(function(){if(dock)prog()},500);
@@ -694,11 +720,11 @@ function fav(id){var x=A[id];x.fav=!x.fav;saveFav();var n=S.filter(function(s){r
  $$('[data-fav="'+id+'"]').forEach(function(b){b.classList.toggle("on",x.fav)});toast(x.fav?"♥ Added to Favorites":"Removed from Favorites");
  if(curNav==="Favorites"&&!q.value)show(V.Favorites())}
 function setWeek(w){d=WD[w];$(".card h3 span[data-m=w]").firstChild.nodeValue=w;bars();if(curNav==="Activity"&&!q.value)show(V.Activity())}
-var V={"Recently Played":function(){return head("Recently Played",recent.length+" songs")+(rows(recent,1)||'<div class="empty">Chưa nghe bài nào.</div>')},
+var V={"Recently Played":function(){return head("Recently Played",recent.length+" songs")+(rows(recent,1)||'<div class="empty">Nothing played yet.</div>')},
 "My Music":function(){return head("My Music",music().length+" songs")+rows(music(),1)},
 "Favorites":function(){var f=S.filter(function(x){return x.fav});return head("Favorites",f.length+" songs")+(rows(f,1)||'<div class="empty">No favorites yet. Tap ♥ on a song to add it.</div>')},
-"Playlists":function(){return head("Playlists",Ls.length+" playlists")+(pickMix?'<div class="empty" style="padding:4px 0 10px">⭐ Chọn một playlist để đặt làm Daily Mix</div>':'')+'<div class="plact"><button class="btn" data-newpl="1">＋ New playlist</button></div>'+Ls.map(function(x){return x.pl!=null?prow(x):brow(x)}).join("")},
-"Podcasts":function(){var v=pods();return head("Podcasts",v.length+" episodes")+(v.map(podRow).join("")||'<div class="empty">Chưa có podcast nào. Dán link YouTube vào ô tìm kiếm rồi bấm 🎙, hoặc thêm <b>pod:true</b> vào danh sách LIB.</div>')},
+"Playlists":function(){return head("Playlists",Ls.length+" playlists")+(pickMix?'<div class="empty" style="padding:4px 0 10px">⭐ Pick a playlist to set as Daily Mix</div>':'')+'<div class="plact"><button class="btn" data-newpl="1">＋ New playlist</button></div>'+Ls.map(function(x){return x.pl!=null?prow(x):brow(x)}).join("")},
+"Podcasts":function(){var v=pods();return head("Podcasts",v.length+" episodes")+(v.map(podRow).join("")||'<div class="empty">No podcasts yet. Paste a YouTube link into the search box and tap 🎙, or add <b>pod:true</b> to an item in the LIB list.</div>')},
 "Activity":function(){var t=0;return head("Activity","Hours per day")+d.map(function(h,i){t+=h*.06;return '<div class="ar"><span>'+DY[i]+'</span><i style="width:'+h*.7+'%;background:'+c[i]+'"></i><b>'+(h*.06).toFixed(1)+'h</b></div>'}).join("")+'<div class="empty">Total: '+t.toFixed(1)+' hours</div>'},
 "Settings":function(){return head("Settings")+["Notifications","Autoplay next song","Explicit content"].map(function(n,i){return '<label class="set">'+n+'<input type="checkbox" data-set="'+i+'"'+(i<2?" checked":"")+'></label>'}).join("")}};
 /* setup */
@@ -708,7 +734,7 @@ q.placeholder="Search or paste YouTube link";
 document.body.insertAdjacentHTML("beforeend",'<div class="modal" id="pm"><div class="box"><h4>Add to playlist</h4><div id="pml"></div><button class="btn gh" data-a="pmx">Done</button></div></div>');
 var IC={rs:'<path d="M1 4v6h6M3.5 15a9 9 0 102.1-9.4L1 10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',rp:'<path d="M17 2l4 4-4 4M3 11V9a3 3 0 013-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 01-3 3H3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',pv:'<path d="M6 5h2.5v14H6zM20 5v14L9.5 12z" fill="currentColor"/>',nx:'<path d="M15.5 5H18v14h-2.5zM4 5l10.5 7L4 19z" fill="currentColor"/>',x:'<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'};
 function ib(k,c){return'<button class="dk" data-c="'+c+'" aria-label="'+c+'"><svg viewBox="0 0 24 24" width="18" height="18">'+IC[k]+'</svg></button>'}
-document.body.insertAdjacentHTML("beforeend",'<div id="dock" hidden><div class="vid"><div id="yt"></div></div><div class="dm"><div class="th" id="dth"></div><div class="di"><b id="dt"></b><small id="da"></small></div>'+ib("rp","rep").replace('class="dk"','class="dk rp" title="Dừng sau mỗi bài"')+ib("rs","replay").replace('class="dk"','class="dk" title="Phát lại từ đầu"')+ib("pv","prev")+'<button class="play" id="pp" data-c="pp" aria-label="Play or pause">'+PL+'</button>'+ib("nx","next")+ib("x","close")+'</div><div class="dr">'+pcb("b15","\u221215","Lùi 15 giây")+'<input type="range" id="pg" min="0" max="1000" value="0" aria-label="Seek"><span id="tm">0:00</span>'+pcb("f30","+30","Tiến 30 giây")+pcb("spd","1\u00d7","Tốc độ phát").replace("<button ",'<button id="spd" ')+'</div></div>');
+document.body.insertAdjacentHTML("beforeend",'<div id="dock" hidden><div class="vid"><div id="yt"></div></div><div class="dm"><div class="th" id="dth"></div><div class="di"><b id="dt"></b><small id="da"></small></div>'+ib("rp","rep").replace('class="dk"','class="dk rp" title="Stop after each song"')+ib("rs","replay").replace('class="dk"','class="dk" title="Replay from start"')+ib("pv","prev")+'<button class="play" id="pp" data-c="pp" aria-label="Play or pause">'+PL+'</button>'+ib("nx","next")+ib("x","close")+'</div><div class="dr">'+pcb("b15","\u221215","Back 15 seconds")+'<input type="range" id="pg" min="0" max="1000" value="0" aria-label="Seek"><span id="tm">0:00</span>'+pcb("f30","+30","Forward 30 seconds")+pcb("spd","1\u00d7","Playback speed").replace("<button ",'<button id="spd" ')+'</div></div>');
 dock=$("#dock");pg=$("#pg");au.setAttribute("playsinline","");au.preload="metadata";$(".vid",dock).appendChild(au);
 pg.addEventListener("input",function(){drag=true});
 pg.addEventListener("change",function(){var x=A[cur],d=0;try{d=x.yt?yp.getDuration():au.duration}catch(e){}if(d>0&&isFinite(d)){var tt=pg.value/1000*d;if(x.yt)yp.seekTo(tt,true);else au.currentTime=tt}drag=false});
@@ -726,7 +752,7 @@ $$(".song .play",rc).forEach(function(b){b.remove()});renderRecent();bars();
 /* Lời chào theo giờ của máy: 5-11 sáng, 12-17 chiều, 18-21 tối, 22-4 đêm (cập nhật mỗi phút) */
 function greet(){var h=new Date().getHours(),g=h>=5&&h<12?["Good Morning","☀️"]:h>=12&&h<18?["Good Afternoon","🌤️"]:h>=18&&h<22?["Good Evening","🌆"]:["Good Night","🌙"];var e=$(".hero h2");if(e)e.textContent=g[0]+", "+(window.MIA?MIA.name:"Guest")+"! "+g[1]}
 window.MIA_GREET=greet;greet();setInterval(greet,60000);
-function fill(k,m){m.innerHTML={n:N.map(function(x){return"<p>"+x+"</p>"}).join(""),u:window.MIA_MENU?window.MIA_MENU():'<button data-a="set">⚙️ Settings</button>',w:W.map(function(w){return'<button data-w="'+w+'">'+w+"</button>"}).join("")}[k]}
+function fill(k,m){m.innerHTML={n:N.map(function(x){return"<p>"+x+"</p>"}).join(""),u:window.MIA_MENU?window.MIA_MENU():'<button class="mo" data-a="act">📈 Activity</button><button data-a="set">⚙️ Settings</button>',w:W.map(function(w){return'<button data-w="'+w+'">'+w+"</button>"}).join("")}[k]}
 /* ===== DISCOVER: gợi ý theo gu nghe =====
  Điểm mỗi bài = +4 nếu CHƯA NGHE, + tới 3.5 nếu cùng nghệ sĩ với bài bạn hay nghe / đã thả tim, + chút ngẫu nhiên; bài vừa nghe xong bị trừ điểm. Bỏ qua podcast, bài lỗi, bài đang phát. */
 var GEN={"Local file":1,"youtube.com":1,"YouTube":1};
@@ -739,7 +765,7 @@ function discover(){
   var ri=recent.indexOf(c),fresh=ri<0&&!CNT[fk(c)],a=(c.a&&!GEN[c.a])?ap[c.a]-pts(c):0,sc=Math.random()*2.5,why;
   if(fresh)sc+=4;else if(ri>-1&&ri<4)sc-=6;
   if(a>.1)sc+=Math.min(a,10)*.35;
-  why=a>.1?(fresh?"bài bạn chưa nghe của "+c.a+", nghệ sĩ bạn hay nghe":"cùng nghệ sĩ "+c.a+" với bài bạn hay nghe"):fresh?"bài bạn chưa nghe":"đã lâu bạn chưa nghe lại";
+  why=a>.1?(fresh?"a song you haven’t heard by "+c.a+", an artist you play often":"same artist "+c.a+" as songs you play often"):fresh?"a song you haven’t heard yet":"you haven’t played it in a while";
   if(sc>bs){bs=sc;best={s:c,why:why}}});
  return best}
 document.addEventListener("click",function(e){
@@ -748,7 +774,7 @@ document.addEventListener("click",function(e){
  if(a){var k=a.dataset.a;
   if(a.dataset.w)setWeek(a.dataset.w);
   else if(k==="pro")MIA_AUTH.open();else if(k==="login"||k==="signup")MIA_AUTH.open(k);
-  else if(k==="set")go("Settings");
+  else if(k==="set")go("Settings");else if(k==="act")go("Activity");
   else if(k==="out")MIA_AUTH.logout();
   else if(k==="no")$("#md").classList.remove("open");
   else if(k==="pmx")$("#pm").classList.remove("open");
@@ -757,10 +783,10 @@ document.addEventListener("click",function(e){
  if(t.closest(".menu"))return;
  if(t.id==="md"||t.id==="pm"){t.classList.remove("open");return}
  if(h){if(h.dataset.m==="n")$("#bd").style.display="none";fill(h.dataset.m,$(".menu",h));$(".menu",h).classList.toggle("open");return}
- var cc=t.closest("[data-c]");if(cc){var ck=cc.dataset.c;if(ck==="pp")toggle();else if(ck==="rep"){rep=(rep+1)%3;cc.classList.toggle("on",rep>0);cc.classList.toggle("one",rep===2);cc.title=["Dừng sau mỗi bài","Tự phát bài kế (cả danh sách)","Lặp lại 1 bài"][rep];toast("🔁 "+cc.title)}else if(ck==="b15")seekBy(-15);else if(ck==="f30")seekBy(30);else if(ck==="spd")cycleSpeed();else if(ck==="replay")replay();else if(ck==="prev")next(-1);else if(ck==="next")next(1);else{cur=null;tok++;stopAudio();ytCmd("stopVideo");on=false;dock.hidden=true;paint()}return}
+ var cc=t.closest("[data-c]");if(cc){var ck=cc.dataset.c;if(ck==="pp")toggle();else if(ck==="rep"){rep=(rep+1)%3;cc.classList.toggle("on",rep>0);cc.classList.toggle("one",rep===2);cc.title=["Stop after each song","Autoplay next song (whole list)","Repeat one song"][rep];toast("🔁 "+cc.title)}else if(ck==="b15")seekBy(-15);else if(ck==="f30")seekBy(30);else if(ck==="spd")cycleSpeed();else if(ck==="replay")replay();else if(ck==="prev")next(-1);else if(ck==="next")next(1);else{cur=null;tok++;stopAudio();ytCmd("stopVideo");on=false;dock.hidden=true;paint()}return}
  var dn=t.closest("[data-done]");if(dn){var dx=A[dn.dataset.done],r2=POS[fk(dx)]||(POS[fk(dx)]={});r2.done=r2.done?0:1;if(r2.done)r2.p=0;savePos();show(V.Podcasts());return}
- var pd=t.closest("[data-pod]");if(pd){var px=A[pd.dataset.pod];px.pod=!px.pod;PK[fk(px)]=px.pod?1:0;try{localStorage.setItem("mia_pk",JSON.stringify(PK))}catch(e){}save();reindex();toast(px.pod?"🎙 Đã thêm vào Podcasts":"Đã chuyển về Music");
-  if(q.value)$$('[data-pod="'+px.id+'"]').forEach(function(b){b.classList.toggle("on",px.pod);b.title=px.pod?"Bỏ khỏi Podcasts":"Thêm vào Podcasts"});else if(curNav==="Playlists")rerenderPL();else if(curNav!=="Dashboard"&&V[curNav])show(V[curNav]());return}
+ var pd=t.closest("[data-pod]");if(pd){var px=A[pd.dataset.pod];px.pod=!px.pod;PK[fk(px)]=px.pod?1:0;try{localStorage.setItem("mia_pk",JSON.stringify(PK))}catch(e){}save();reindex();toast(px.pod?"🎙 Added to Podcasts":"Moved back to Music");
+  if(q.value)$$('[data-pod="'+px.id+'"]').forEach(function(b){b.classList.toggle("on",px.pod);b.title=px.pod?"Remove from Podcasts":"Add to Podcasts"});else if(curNav==="Playlists")rerenderPL();else if(curNav!=="Dashboard"&&V[curNav])show(V[curNav]());return}
  var f=t.closest("[data-fav]");if(f){fav(f.dataset.fav);return}
  var ad=t.closest("[data-add]");if(ad){openPM(ad.dataset.add);return}
  var pa=t.closest("[data-padd]");if(pa){togglePL(pa.dataset.padd);return}
@@ -770,7 +796,7 @@ document.addEventListener("click",function(e){
  var pp=t.closest("[data-playpl]");if(pp){play("p"+pp.dataset.playpl);return}
  if(t.closest("#go")){go("Recently Played");quickPick=true;return;play(cur||(music().filter(function(s){return!bad[s.id]})[Math.random()*music().filter(function(s){return!bad[s.id]}).length|0]||S[0]).id);return}
  if(t.closest(".prem .pk")){$("#md").classList.add("open");return}
- if(t.closest(".disc .btn")){var pk=discover();if(!pk){toast("⚠ Không còn bài nào phát được");return}chain=true;play(pk.s.id,true);toast("✨ "+pk.s.t+" — "+pk.why);clearTimeout(tm);tm=setTimeout(function(){$("#toast").classList.remove("show")},4200);return}
+ if(t.closest(".disc .btn")){var pk=discover();if(!pk){toast("⚠ No playable songs left");return}chain=true;play(pk.s.id,true);toast("✨ "+pk.s.t+" — "+pk.why);clearTimeout(tm);tm=setTimeout(function(){$("#toast").classList.remove("show")},4200);return}
  var xr=t.closest("[data-xr]");if(xr){xPlay(xr.dataset.xr);return}
  var yr=t.closest("[data-ytr]");if(yr){ytPlay(yr.dataset.ytr);return}
  if(t.closest("[data-ytq]")){ytSearch(q.value.trim());return}
@@ -804,7 +830,7 @@ function ytApi(path){if(!YT_KEY)return Promise.reject("nokey");return ytGet("htt
 function ytFind(query){return ytApi("search?part=snippet&type=video&videoEmbeddable=true&maxResults=15&q="+encodeURIComponent(query)).then(function(j){return j.items.filter(function(i){return i.id&&i.id.videoId}).map(function(i){return{id:i.id.videoId,t:clean(i.snippet.title),a:clean(i.snippet.channelTitle)}})})}
 function ytFill(html,sub){var b=$("#ytres");if(b)b.innerHTML=html;var s=$("#ytsub");if(s&&sub!=null)s.textContent=sub}
 function ytRel(x){if(!YT_KEY||!x||!x.t||x.t==="YouTube video")return;var id=x.yt;
- ytFind(x.t).then(function(l){if(yid(q.value)!==id)return;l=l.filter(function(r){return r.id!==id});ytFill(l.length?head("Bài cùng tên / tương tự",l.length+" found")+ytRows(l):"")}).catch(function(){})}
+ ytFind(x.t).then(function(l){if(yid(q.value)!==id)return;l=l.filter(function(r){return r.id!==id});ytFill(l.length?head("Same title / similar",l.length+" found")+ytRows(l):"")}).catch(function(){})}
 function ytPlaylist(pid){
  show(head("YouTube playlist",'<i id="ytsub" style="font-style:normal">loading…</i>')+'<div id="ytres">'+ytMsg("Loading playlist…")+'</div>');
  ytApi("playlistItems?part=snippet&maxResults=30&playlistId="+encodeURIComponent(pid)).then(function(j){if(ylist(q.value)!==pid)return;
@@ -867,30 +893,30 @@ function guestKeys(){var r=[];for(var i=0;i<localStorage.length;i++){var k=local
 function apply(){
  var u=cu(),name=u?u.name:M.guest;M.name=name;
  var hi=$(".hi");if(hi){hi.textContent="Hi, "+name+"! 👋";hi.dataset.a="pro";hi.setAttribute("role","button");hi.tabIndex=0}
- var av=$(".ava");if(av){av.dataset.a="pro";av.setAttribute("role","button");av.tabIndex=0;av.title=u?"Hồ sơ của bạn":"Đăng nhập"}
+ var av=$(".ava");if(av){av.dataset.a="pro";av.setAttribute("role","button");av.tabIndex=0;av.title=u?"Your profile":"Log in"}
  var im=$(".ava img");if(im)im.src=(u&&u.avatar)||ORIG;
  var ic=$(".top .ic.p");if(ic){var p=$(".pimg",ic);
   if(u&&u.avatar){if(!p){p=document.createElement("img");p.className="pimg";p.alt="";ic.insertBefore(p,ic.firstChild)}p.src=u.avatar;ic.classList.add("has")}else ic.classList.remove("has")}
  if(window.MIA_GREET)window.MIA_GREET()}
 window.MIA_MENU=function(){var u=cu();
- return u?'<p><b>'+esc(u.name)+'</b><br><small>@'+esc(u.u)+'</small></p><hr><button data-a="pro">👤 My profile</button><button data-a="set">⚙️ Settings</button><button data-a="out">🚪 Log out</button>'
- :'<p><b>'+esc(M.guest)+'</b><br><small>Chưa đăng nhập</small></p><hr><button data-a="login">🔑 Log in</button><button data-a="signup">✨ Sign up</button><button data-a="set">⚙️ Settings</button>'};
+ return u?'<p><b>'+esc(u.name)+'</b><br><small>@'+esc(u.u)+'</small></p><hr><button data-a="pro">👤 My profile</button><button class="mo" data-a="act">📈 Activity</button><button data-a="set">⚙️ Settings</button><button data-a="out">🚪 Log out</button>'
+ :'<p><b>'+esc(M.guest)+'</b><br><small>Not logged in</small></p><hr><button data-a="login">🔑 Log in</button><button data-a="signup">✨ Sign up</button><button class="mo" data-a="act">📈 Activity</button><button data-a="set">⚙️ Settings</button>'};
 
 /* ----- dựng dialog ----- */
-document.body.insertAdjacentHTML("beforeend",'<div class="modal" id="au"><div class="box au" role="dialog" aria-modal="true" aria-label="Tài khoản"><button class="x" data-au="close" aria-label="Đóng">×</button><div id="auc"></div></div></div>');
+document.body.insertAdjacentHTML("beforeend",'<div class="modal" id="au"><div class="box au" role="dialog" aria-modal="true" aria-label="Account"><button class="x" data-au="close" aria-label="Close">×</button><div id="auc"></div></div></div>');
 var ov=$("#au"),box=$("#auc");
-function pw(id,lb,ac){return'<label class="f">'+lb+'<span class="pw"><input id="'+id+'" type="password" autocomplete="'+ac+'" maxlength="64"><button type="button" class="eye" data-au="eye" aria-label="Hiện/ẩn mật khẩu">👁</button></span></label>'}
+function pw(id,lb,ac){return'<label class="f">'+lb+'<span class="pw"><input id="'+id+'" type="password" autocomplete="'+ac+'" maxlength="64"><button type="button" class="eye" data-au="eye" aria-label="Show/hide password">👁</button></span></label>'}
 function tx(id,lb,ac,ml,v){return'<label class="f">'+lb+'<input id="'+id+'" type="text" autocomplete="'+ac+'" maxlength="'+ml+'" autocapitalize="none" spellcheck="false" value="'+esc(v||"")+'"></label>'}
 function stats(){var f=0,l=0,c=0;try{f=JSON.parse(localStorage.getItem("mia_fav")||"[]").length}catch(e){}try{l=JSON.parse(localStorage.getItem("mia_pl")||"[]").length}catch(e){}try{var o=JSON.parse(localStorage.getItem("mia_cnt")||"{}");for(var k in o)c+=+o[k]||0}catch(e){}return[f,l,c]}
 var V={
- login:function(){return'<div class="aub">🎧</div><h4>Welcome back!</h4><p class="sub">Đăng nhập để giữ playlist và bài yêu thích của bạn.</p>'+tx("a-u","Username","username",20)+pw("a-p","Password","current-password")+'<div class="err" id="a-e" role="alert"></div><div class="row"><button class="btn" data-au="go">Log in</button></div><p class="alt">Chưa có tài khoản? <button class="lnk" data-au="signup">Sign up</button></p><p class="alt"><button class="lnk mut" data-au="close">Tiếp tục với tư cách khách</button></p>'},
- signup:function(){var g=guestKeys().length>0;return'<div class="aub">✨</div><h4>Create account</h4><p class="sub">Tài khoản lưu ngay trên thiết bị này, miễn phí và không cần email.</p>'+tx("a-u","Username (3–20 ký tự: chữ, số, _ . -)","username",20)+pw("a-p","Password (ít nhất 6 ký tự)","new-password")+pw("a-c","Nhập lại password","new-password")+(g?'<label class="chk"><input type="checkbox" id="a-k" checked><span>Giữ lại playlist, yêu thích và lịch sử nghe hiện tại cho tài khoản mới</span></label>':'')+'<div class="err" id="a-e" role="alert"></div><div class="row"><button class="btn" data-au="go">Sign up</button></div><p class="alt">Đã có tài khoản? <button class="lnk" data-au="login">Log in</button></p>'},
- profile:function(){var u=cu(),s=stats();return'<h4>My profile</h4><div class="phd"><img class="pav" id="a-img" alt="Ảnh đại diện" data-au="pick" title="Đổi ảnh"><div class="pin"><b id="a-hn">'+esc(u.name)+'</b><span>@'+esc(u.u)+' · tham gia '+new Date(u.ts).toLocaleDateString("vi-VN")+'</span><div class="pact"><button class="lnk" data-au="pick">Đổi ảnh</button><button class="lnk mut" data-au="rmimg">Xoá ảnh</button></div></div></div><input type="file" id="a-f" accept="image/*" hidden>'+
-  '<div class="s3"><div><b>'+s[0]+'</b><small>Favorites</small></div><div><b>'+s[1]+'</b><small>Playlists</small></div><div><b>'+s[2]+'</b><small>Lượt nghe</small></div></div>'+
-  '<div class="tabs" role="tablist"><button class="on" data-au="tab" data-t="p" role="tab">Hồ sơ</button><button data-au="tab" data-t="s" role="tab">Mật khẩu</button><button data-au="tab" data-t="d" role="tab">Dữ liệu</button></div>'+
-  '<div data-pane="p">'+tx("a-n","Tên hiển thị","nickname",20,u.name)+tx("a-b","Giới thiệu ngắn","off",60,u.bio)+'<div class="row"><button class="btn" data-au="save">Save</button><button class="btn gh" data-au="out">Log out</button></div></div>'+
-  '<div data-pane="s" hidden>'+pw("a-op","Mật khẩu hiện tại","current-password")+pw("a-np","Mật khẩu mới (≥ 6 ký tự)","new-password")+'<div class="row"><button class="btn" data-au="chpw">Cập nhật mật khẩu</button></div></div>'+
-  '<div data-pane="d" hidden><p class="sub" style="text-align:left;margin-bottom:12px">Dữ liệu chỉ nằm trong trình duyệt này. Xuất file để chuyển sang máy khác (đăng ký tài khoản ở đó rồi nhập file).</p><div class="row"><button class="btn gh" data-au="exp">⬇ Xuất sao lưu</button><button class="btn gh" data-au="imp">⬆ Nhập sao lưu</button></div><input type="file" id="a-i" accept="application/json,.json" hidden><div class="row" style="margin-top:10px"><button class="btn dg" data-au="del">🗑 Xoá tài khoản</button></div></div>'+
+ login:function(){return'<div class="aub">🎧</div><h4>Welcome back!</h4><p class="sub">Log in to keep your playlists and favorites.</p>'+tx("a-u","Username","username",20)+pw("a-p","Password","current-password")+'<div class="err" id="a-e" role="alert"></div><div class="row"><button class="btn" data-au="go">Log in</button></div><p class="alt">No account yet? <button class="lnk" data-au="signup">Sign up</button></p><p class="alt"><button class="lnk mut" data-au="close">Continue as guest</button></p>'},
+ signup:function(){var g=guestKeys().length>0;return'<div class="aub">✨</div><h4>Create account</h4><p class="sub">Your account is stored on this device — free, no email needed.</p>'+tx("a-u","Username (3–20 characters: letters, digits, _ . -)","username",20)+pw("a-p","Password (at least 6 characters)","new-password")+pw("a-c","Confirm password","new-password")+(g?'<label class="chk"><input type="checkbox" id="a-k" checked><span>Keep my current playlists, favorites and listening history in the new account</span></label>':'')+'<div class="err" id="a-e" role="alert"></div><div class="row"><button class="btn" data-au="go">Sign up</button></div><p class="alt">Already have an account? <button class="lnk" data-au="login">Log in</button></p>'},
+ profile:function(){var u=cu(),s=stats();return'<h4>My profile</h4><div class="phd"><img class="pav" id="a-img" alt="Profile picture" data-au="pick" title="Change photo"><div class="pin"><b id="a-hn">'+esc(u.name)+'</b><span>@'+esc(u.u)+' · joined '+new Date(u.ts).toLocaleDateString("en-US")+'</span><div class="pact"><button class="lnk" data-au="pick">Change photo</button><button class="lnk mut" data-au="rmimg">Remove photo</button></div></div></div><input type="file" id="a-f" accept="image/*" hidden>'+
+  '<div class="s3"><div><b>'+s[0]+'</b><small>Favorites</small></div><div><b>'+s[1]+'</b><small>Playlists</small></div><div><b>'+s[2]+'</b><small>Plays</small></div></div>'+
+  '<div class="tabs" role="tablist"><button class="on" data-au="tab" data-t="p" role="tab">Profile</button><button data-au="tab" data-t="s" role="tab">Password</button><button data-au="tab" data-t="d" role="tab">Data</button></div>'+
+  '<div data-pane="p">'+tx("a-n","Display name","nickname",20,u.name)+tx("a-b","Short bio","off",60,u.bio)+'<div class="row"><button class="btn" data-au="save">Save</button><button class="btn gh" data-au="out">Log out</button></div></div>'+
+  '<div data-pane="s" hidden>'+pw("a-op","Current password","current-password")+pw("a-np","New password (at least 6 characters)","new-password")+'<div class="row"><button class="btn" data-au="chpw">Update password</button></div></div>'+
+  '<div data-pane="d" hidden><p class="sub" style="text-align:left;margin-bottom:12px">Your data stays in this browser only. Export a file to move it to another device (sign up there, then import the file).</p><div class="row"><button class="btn gh" data-au="exp">⬇ Export backup</button><button class="btn gh" data-au="imp">⬆ Import backup</button></div><input type="file" id="a-i" accept="application/json,.json" hidden><div class="row" style="margin-top:10px"><button class="btn dg" data-au="del">🗑 Delete account</button></div></div>'+
   '<div class="err" id="a-e" role="alert" style="margin:10px 0 0"></div>'}};
 function err(m,ok){var e=$("#a-e");if(e){e.textContent=m||"";e.classList.toggle("ok",!!ok)}return false}
 function val(id){var e=$("#"+id);return e?e.value:""}
@@ -901,34 +927,34 @@ function open(v){render(v||(cu()?"profile":"login"));ov.classList.add("open")}
 function close(){ov.classList.remove("open")}
 
 /* ----- hành động ----- */
-function doLogin(){var n=val("a-u").trim(),p=val("a-p"),k=n.toLowerCase();if(!n||!p)return err("Hãy nhập tên đăng nhập và mật khẩu.");
- U=users();if(!has(U,k))return err("Sai tên đăng nhập hoặc mật khẩu.");var u=U[k];
- hash(p,u.salt,u.h.charAt(0)==="x").then(function(h){if(h!==u.h)return err("Sai tên đăng nhập hoặc mật khẩu.");R.set("mia_session",k);reload("👋 Chào mừng trở lại, "+u.name+"!")})}
+function doLogin(){var n=val("a-u").trim(),p=val("a-p"),k=n.toLowerCase();if(!n||!p)return err("Please enter your username and password.");
+ U=users();if(!has(U,k))return err("Wrong username or password.");var u=U[k];
+ hash(p,u.salt,u.h.charAt(0)==="x").then(function(h){if(h!==u.h)return err("Wrong username or password.");R.set("mia_session",k);reload("👋 Welcome back, "+u.name+"!")})}
 function doSignup(){var n=val("a-u").trim(),p=val("a-p"),c=val("a-c"),k=n.toLowerCase();
- if(!/^[A-Za-z0-9_.-]{3,20}$/.test(n)||k==="__proto__")return err("Tên đăng nhập 3–20 ký tự: chữ, số, _ . -");
- if(p.length<6)return err("Mật khẩu cần ít nhất 6 ký tự.");if(p!==c)return err("Mật khẩu nhập lại không khớp.");
- U=users();if(has(U,k))return err("Tên này đã được dùng trên thiết bị này.");var salt=rnd();
+ if(!/^[A-Za-z0-9_.-]{3,20}$/.test(n)||k==="__proto__")return err("Username must be 3–20 characters: letters, digits, _ . -");
+ if(p.length<6)return err("Password must be at least 6 characters.");if(p!==c)return err("Passwords don’t match.");
+ U=users();if(has(U,k))return err("This username is already used on this device.");var salt=rnd();
  hash(p,salt).then(function(h){U[k]={u:n,name:n,bio:"",avatar:"",salt:salt,h:h,ts:Date.now()};put(U);
   var kp=$("#a-k");if(kp&&kp.checked)guestKeys().forEach(function(x){var v=R.get(x);if(v!=null)R.set("u:"+k+":"+x,v)});
-  R.set("mia_session",k);reload("🎉 Tạo tài khoản thành công!")})}
-function doSave(){var u=cu(),n=val("a-n").trim();if(!n)return err("Tên hiển thị không được để trống.");
- u.name=n.slice(0,20);u.bio=val("a-b").trim().slice(0,60);if(pend!==null)u.avatar=pend;pend=null;put(U);apply();var hn=$("#a-hn");if(hn)hn.textContent=u.name;err("✓ Đã lưu hồ sơ",1);toast("✅ Đã lưu hồ sơ")}
-function doPw(){var u=cu(),o=val("a-op"),n=val("a-np");if(n.length<6)return err("Mật khẩu mới cần ít nhất 6 ký tự.");
- hash(o,u.salt,u.h.charAt(0)==="x").then(function(h){if(h!==u.h)return err("Mật khẩu hiện tại không đúng.");var s=rnd();return hash(n,s).then(function(h2){u.salt=s;u.h=h2;put(U);$("#a-op").value="";$("#a-np").value="";err("✓ Đã đổi mật khẩu",1)})})}
-function logout(){R.del("mia_session");reload("👋 Đã đăng xuất")}
-function del(){var u=cu();if(!u||!confirm("Xoá tài khoản “"+u.u+"” và toàn bộ playlist, yêu thích, lịch sử của tài khoản này? Không thể hoàn tác."))return;
+  R.set("mia_session",k);reload("🎉 Account created!")})}
+function doSave(){var u=cu(),n=val("a-n").trim();if(!n)return err("Display name can’t be empty.");
+ u.name=n.slice(0,20);u.bio=val("a-b").trim().slice(0,60);if(pend!==null)u.avatar=pend;pend=null;put(U);apply();var hn=$("#a-hn");if(hn)hn.textContent=u.name;err("✓ Profile saved",1);toast("✅ Profile saved")}
+function doPw(){var u=cu(),o=val("a-op"),n=val("a-np");if(n.length<6)return err("New password must be at least 6 characters.");
+ hash(o,u.salt,u.h.charAt(0)==="x").then(function(h){if(h!==u.h)return err("Current password is incorrect.");var s=rnd();return hash(n,s).then(function(h2){u.salt=s;u.h=h2;put(U);$("#a-op").value="";$("#a-np").value="";err("✓ Password changed",1)})})}
+function logout(){R.del("mia_session");reload("👋 Logged out")}
+function del(){var u=cu();if(!u||!confirm("Delete account “"+u.u+"” and all of its playlists, favorites and history? This can’t be undone."))return;
  var pre="u:"+me+":",ks=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf(pre)===0)ks.push(k)}ks.forEach(function(k){R.del(k)});
- delete U[me];put(U);R.del("mia_session");reload("🗑 Đã xoá tài khoản")}
+ delete U[me];put(U);R.del("mia_session");reload("🗑 Account deleted")}
 function exp(){var d={v:1,user:{u:cu().u,name:cu().name,bio:cu().bio,avatar:cu().avatar},data:{}};DATA.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)d.data[k]=v});
- var b=new Blob([JSON.stringify(d)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="music-backup-"+cu().u+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);toast("⬇ Đã xuất file sao lưu")}
+ var b=new Blob([JSON.stringify(d)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="music-backup-"+cu().u+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);toast("⬇ Backup file exported")}
 function imp(file){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!d||d.v!==1||typeof d.data!=="object")throw 0;
-  if(!confirm("Nhập sao lưu sẽ ghi đè playlist, yêu thích và lịch sử hiện tại của tài khoản này. Tiếp tục?"))return;
+  if(!confirm("Importing a backup will overwrite this account’s current playlists, favorites and history. Continue?"))return;
   DATA.forEach(function(k){if(typeof d.data[k]==="string")R.set("u:"+me+":"+k,d.data[k])});
   var u=cu();if(d.user){if(typeof d.user.name==="string"&&d.user.name.trim())u.name=d.user.name.slice(0,20);if(typeof d.user.bio==="string")u.bio=d.user.bio.slice(0,60);if(typeof d.user.avatar==="string"&&/^data:image\//.test(d.user.avatar))u.avatar=d.user.avatar;put(U)}
-  reload("⬆ Đã nhập sao lưu")}catch(e){err("File sao lưu không hợp lệ.")}};r.readAsText(file)}
-function pickImg(file){if(!file||!/^image\//.test(file.type))return err("Hãy chọn một file ảnh.");var r=new FileReader();
+  reload("⬆ Backup imported")}catch(e){err("Invalid backup file.")}};r.readAsText(file)}
+function pickImg(file){if(!file||!/^image\//.test(file.type))return err("Please choose an image file.");var r=new FileReader();
  r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(im.width,im.height),c=document.createElement("canvas");c.width=c.height=160;
-  c.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);pend=c.toDataURL("image/jpeg",.85);$("#a-img").src=pend;err("Nhấn Save để lưu ảnh mới.",1)};im.onerror=function(){err("Không đọc được ảnh này.")};im.src=r.result};r.readAsDataURL(file)}
+  c.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);pend=c.toDataURL("image/jpeg",.85);$("#a-img").src=pend;err("Press Save to keep the new photo.",1)};im.onerror=function(){err("Couldn’t read this image.")};im.src=r.result};r.readAsDataURL(file)}
 
 ov.addEventListener("click",function(e){if(e.target===ov){close();return}
  var b=e.target.closest("[data-au]");if(!b)return;var k=b.dataset.au;
@@ -937,7 +963,7 @@ ov.addEventListener("click",function(e){if(e.target===ov){close();return}
  else if(k==="eye"){var i=$("input",b.parentNode);i.type=i.type==="password"?"text":"password"}
  else if(k==="save")doSave();else if(k==="chpw")doPw();else if(k==="out")logout();else if(k==="del")del();else if(k==="exp")exp();
  else if(k==="imp")$("#a-i").click();else if(k==="pick")$("#a-f").click();
- else if(k==="rmimg"){pend="";$("#a-img").src=ORIG;err("Nhấn Save để xoá ảnh.",1)}});
+ else if(k==="rmimg"){pend="";$("#a-img").src=ORIG;err("Press Save to remove the photo.",1)}});
 ov.addEventListener("change",function(e){var t=e.target;if(t.id==="a-f")pickImg(t.files[0]);else if(t.id==="a-i"&&t.files[0])imp(t.files[0]);if(t.type==="file")t.value=""});
 ov.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.type!=="checkbox"){e.preventDefault();view==="profile"?(e.target.id==="a-op"||e.target.id==="a-np"?doPw():doSave()):view==="signup"?doSignup():doLogin()}});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&ov.classList.contains("open"))close()});
@@ -965,10 +991,18 @@ window.addEventListener("resize",function(){if(pan.classList.contains("open"))pl
 inp.addEventListener("input",function(){render(inp.value)});
 list.addEventListener("click",function(e){var b=e.target.closest("button[data-c]");if(b){choose(b.dataset.c)}});
 window.googleTranslateElementInit=function(){new google.translate.TranslateElement({pageLanguage:"en",autoDisplay:false},"gte")};
-function load(cb){if(window.google&&google.translate&&document.querySelector("select.goog-te-combo"))return cb();if(!loading){loading=true;var sc=document.createElement("script");sc.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";sc.onerror=function(){loading=false;alert("Could not load the translation service. Check your internet connection.")};document.head.appendChild(sc)}var n=0;(function w(){if(document.querySelector("select.goog-te-combo"))return cb();if(++n<60)setTimeout(w,250)})()}
+function ready(){var s=document.querySelector("select.goog-te-combo");return s&&s.options.length>1?s:null}
+function load(cb){if(window.google&&google.translate&&ready())return cb();if(!loading){loading=true;var sc=document.createElement("script");sc.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";sc.onerror=function(){loading=false;alert("Could not load the translation service. Check your internet connection.")};document.head.appendChild(sc)}var n=0;(function w(){if(ready())return setTimeout(cb,150);if(++n<80)setTimeout(w,250)})()}
 function setCookie(v){var d=location.hostname,x="; path=/";document.cookie="googtrans="+v+x;document.cookie="googtrans="+v+x+"; domain="+d}
 function clearCookie(){var past="=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";document.cookie="googtrans"+past;document.cookie="googtrans"+past+"; domain="+location.hostname}
-function apply(c){load(function(){var s=document.querySelector("select.goog-te-combo");if(!s)return;s.value=c;s.dispatchEvent(new Event("change"))})}
+function apply(c,tries){tries=tries||0;
+ /* first load: pre-set the cookie so the widget also translates by itself on init */
+ if(!(window.google&&google.translate&&ready()))setCookie("/en/"+c);
+ load(function(){var s=ready();if(!s)return;
+  var ok=[].some.call(s.options,function(o){return o.value===c});if(!ok)return;
+  s.value=c;s.dispatchEvent(new Event("change",{bubbles:true}));
+  /* verify it really took effect; if not (widget not fully wired yet), try again */
+  setTimeout(function(){if(cur!==c)return;if(!/translated-(ltr|rtl)/.test(document.documentElement.className)&&tries<3)apply(c,tries+1)},1200)})}
 function choose(c){cur=c;try{localStorage.setItem("lang",c)}catch(e){}close();
  if(c==="en"){if(/translated-/.test(document.documentElement.className)||document.cookie.indexOf("googtrans")>=0){clearCookie();location.reload()}return}
  apply(c)}
